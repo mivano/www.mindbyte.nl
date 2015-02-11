@@ -1,0 +1,6 @@
+= GitHub and HubPress
+
+GitHub continues to amaze me; that you could host your site in ph-pages and Jekhyll I knew, but I did always strugle to get something sensible out of it. 
+With HubPress this becomes much simpler! 
+
+Just fork, configure and start blogging. Nice and easy :-)
