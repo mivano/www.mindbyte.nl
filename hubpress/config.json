@@ -1,10 +1,1 @@
-{
-  "meta": {
-    "username": "mivano",
-    "repositoryName": "mivano.github.io",
-    "branch": "master"
-  },
-  "theme": {
-    "name": "Casper"
-  }
-}
+{"meta":{"username":"mivano","repositoryName":"mivano.github.io","branch":"master"},"site":{"title":"There is no place like 127.0.0.0","url":"http://mivano.github.io"},"socialnetwork":{},"theme":{"name":"Casper","url":"http://mivano.github.io/themes/Casper"}}
