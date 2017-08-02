@@ -12,13 +12,21 @@
     "postsPerPage": "10",
     "googleAnalytics": "UA-59660007-1",
     "disqus": "mivano",
-    "url": "http://mindbyte.nl"
+    "url": "http://mindbyte.nl",
+    "cover": "",
+    "delay": ""
   },
   "socialnetwork": {
     "twitter": "http://twitter.com/mivano",
     "linkedin": "https://www.linkedin.com/in/michielvanoudheusden",
     "pinterest": "http://nl.pinterest.com/mivano/",
-    "github": "http://github.com/mivano"
+    "github": "http://github.com/mivano",
+    "email": "",
+    "facebook": "",
+    "googleplus": "",
+    "instagram": "",
+    "flickr": "",
+    "stackoverflow": "https://stackoverflow.com/users/44954/michiel"
   },
   "theme": {
     "name": "uno-zen",
