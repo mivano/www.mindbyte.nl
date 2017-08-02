@@ -27,7 +27,7 @@
   "urls": {
     "site": "http://mindbyte.nl",
     "hubpress": "http://mindbyte.nl",
-    "theme": "//mindbyte.nl/themes/uno",
+    "theme": "//mindbyte.nl/themes/uno-zen",
     "images": "http://mindbyte.nl/images"
   },
   "initialisationConfigComponent": {
