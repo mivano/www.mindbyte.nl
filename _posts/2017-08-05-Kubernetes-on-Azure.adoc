@@ -33,7 +33,7 @@ az login
 
 This will point you to a webpage where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.
 
-Time to start deploying
+Time to start deploying...
 
 == Resource group
 
@@ -98,7 +98,7 @@ You can now send commands to your Kubernetest cluster running in Azure.
 
 == Use the dashboard
 
-If you are a CLI guy, then stop her,e but if you want to see a nice dashboard, keep reading. Kubernetes has a nice UI which you can invoke using the following command:
+If you are a CLI guy, then stop here, but if you want to see a nice dashboard, keep reading. Kubernetes has a UI which you can invoke using the following command:
 
 [source,PowerShell]
 ----
@@ -111,7 +111,7 @@ image::kubui.png[]
 
 == Deleting the cluster
 
-Remeber that everyting you run in Azure cost money, so clean if you are not using it anymore. Since we created a resource group, we can just drop this group to get rid of everything.
+Remeber that everything you run in Azure cost money, so clean if you are not using it anymore. Since we created a resource group, we can just drop this group to get rid of everything.
 
 [source,PowerShell]
 ----
