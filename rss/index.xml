@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><generator>RSS for Node</generator><lastBuildDate>Sat, 05 Aug 2017 21:18:04 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Password complexity]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><generator>RSS for Node</generator><lastBuildDate>Sat, 05 Aug 2017 23:14:26 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Password complexity]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Creating a password for any site or service is difficult enough, but even more when the password needs to comply to a password policy. Minimum length, number of digits, uppercase and lowercase mixes and non alphabetical characters are favorites. And with a bit of luck it should also not be the same password as used in the last x password resets. Combine that with a password age so the user need to do this excercise every number of days.</p>
@@ -122,7 +122,200 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>This will make your service/application more secure and your users happier!</p>
 </div>
 </div>
-</div>]]></description><link>http://mindbyte.nl/2017/08/05/The-complexity-of-picking-a-good-password-and-what-you-can-do-as-a-developer.html</link><guid isPermaLink="true">http://mindbyte.nl/2017/08/05/The-complexity-of-picking-a-good-password-and-what-you-can-do-as-a-developer.html</guid><category><![CDATA[security]]></category><dc:creator><![CDATA[Michiel van Oudheusden]]></dc:creator><pubDate>Sat, 05 Aug 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[GitHub and HubPress]]></title><description><![CDATA[<div class="paragraph">
+</div>]]></description><link>http://mindbyte.nl/2017/08/05/The-complexity-of-picking-a-good-password-and-what-you-can-do-as-a-developer.html</link><guid isPermaLink="true">http://mindbyte.nl/2017/08/05/The-complexity-of-picking-a-good-password-and-what-you-can-do-as-a-developer.html</guid><category><![CDATA[security]]></category><dc:creator><![CDATA[Michiel van Oudheusden]]></dc:creator><pubDate>Sat, 05 Aug 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[Kubernetes on Azure]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here.</p>
+</div>
+<div class="paragraph">
+<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you will have a Kubernetes cluster running in Azure and you can connect to it via your webbrowser.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_install_the_azure_cli">Install the Azure CLI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Make sure you install the Azure command line interface. Version 2 is the current one which allows you to use the <strong>az</strong> command.</p>
+</div>
+<div class="paragraph">
+<p>The instruction depends on the type of operation system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a powershell box and type</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-powershell" data-lang="powershell">az</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This should return something like</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/az.png" alt="az.png">
+</div>
+</div>
+<div class="paragraph">
+<p>If it does not, make sure you installed it correctly, have it in your path, reopen a command prompt (to refetch the environment variables).</p>
+</div>
+<div class="paragraph">
+<p>We first need to login, so issue the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az login</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will point you to a webpage where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
+</div>
+<div class="paragraph">
+<p>Time to start deploying&#8230;&#8203;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resource_group">Resource group</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We will deploy using a resource group, so we first create one using the az group command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az group create --name=kub-rg --location=westeurope</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I call my group <strong>kub-rg</strong> and locate it in west europe. After creation, it will show some details.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/azgroup.png" alt="azgroup.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kubernetes">Kubernetes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installing a Kubernetes cluster works via the same AZ tooling since it allows you to create containers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az acs create --orchestrator-type=kubernetes --resource-group=kub-rg --name=mivano-kub-cluster --dns-prefix=mivano-kub --generate-ssh-key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and dns prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
+</div>
+<div class="paragraph">
+<p>Once completed it will show you an overview.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/azkubdone.png" alt="azkubdone.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kubectl">kubectl</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Similar to the Azure CLI, you also have a Kubernetes CLI. You can download this from the <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">Kubernetes</a> site or use the AZ tooling to get it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az acs kubernetes install-cli</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/azkubectl.png" alt="azkubectl.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_connect_kubectl">Connect kubectl</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We now need to tell kubectl how to connect to our Kubernetes cluster. Luckily the Azure tooling can handle that for us.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az acs kubernetes get-credentials --resource-group=kub-rg --name=mivano-kub-cluster</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will not return anything, so lets check if we are indeed able to connect.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">kubectl get nodes</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see a list of nodes.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/kubnodes.png" alt="kubnodes.png">
+</div>
+</div>
+<div class="paragraph">
+<p>You can now send commands to your Kubernetest cluster running in Azure.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_the_dashboard">Use the dashboard</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you are a CLI guy, then stop here, but if you want to see a nice dashboard, keep reading. Kubernetes has a UI which you can invoke using the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az acs kubernetes browse -g kub-rg -n mivano-kub-cluster</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will start a webserver and opens your browser pointing to your localhost. You will see a nice UI where you can do most of the work.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/kubui.png" alt="kubui.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deleting_the_cluster">Deleting the cluster</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Remeber that everything you run in Azure cost money, so clean if you are not using it anymore. Since we created a resource group, we can just drop this group to get rid of everything.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-PowerShell" data-lang="PowerShell">az group delete --name kub-rg</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will take some time to complete.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With some easy tools you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling you can scale you cluster and talk to Kubernetes or invoke the web UI. Lets see in further posts what we can do with this cluster.</p>
+</div>
+</div>
+</div>]]></description><link>http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html</link><guid isPermaLink="true">http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html</guid><category><![CDATA[azure]]></category><category><![CDATA[docker]]></category><category><![CDATA[kubernetes]]></category><dc:creator><![CDATA[Michiel van Oudheusden]]></dc:creator><pubDate>Sat, 05 Aug 2017 00:00:00 GMT</pubDate></item><item><title><![CDATA[GitHub and HubPress]]></title><description><![CDATA[<div class="paragraph">
 <p>GitHub continues to amaze me; that you could host your site in ph-pages and Jekhyll I knew, but I did always strugle to get something sensible out of it.
 With HubPress this becomes much simpler!</p>
 </div>
