@@ -1,5 +1,6 @@
 = Kubernetes on Azure
 :hp-tags: azure, docker, kubernetes
+:hp-image: http://mindbyte.nl/images/kubui.png
 
 There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here.
 
