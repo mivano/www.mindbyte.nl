@@ -112,7 +112,7 @@ image::kubui.png[]
 
 == Deleting the cluster
 
-Remeber that everything you run in Azure cost money, so clean if you are not using it anymore. Since we created a resource group, we can just drop this group to get rid of everything.
+Remember that everything you run in Azure cost money, so clean if you are not using it anymore. Since we created a resource group, we can just drop this group to get rid of everything.
 
 [source,PowerShell]
 ----
