@@ -48,7 +48,11 @@ By applying tags to the machines you can specify schedules.
 
 == Visual Studio Team Services
 
-We see we can use the Azure CLI but need something to execute this command at a certain time. Azure Automation can do this, but we can also use VSTS as it has a build system with a scheduler. 
+We see we can use the Azure CLI but need something to execute this command at a certain time. Azure Automation can do this, but we can also use VSTS as it has a build system with a scheduler. One of the tasks in VSTS is the Azure CLI task. Not only does it login for you and set a subscription, it will also execute either inline script or a file from your source control.
+
+Create a new repository, drop the files from the https://github.com/mivano/AzureTooling/tree/master/StartStop[StartStop folder] in there and commit. This is not a hard requirement but having your scripts under source control is easier in maintaining them.
+
+Next, create a new empty build, point to your 
 
 
 
