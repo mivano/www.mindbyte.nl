@@ -39,5 +39,9 @@ image::azureautoshutdown.png[]
 
 This does not include an option to start the VM automatically. Do consider if this is really needed. This option can make sure you do not forget to turn off the machine at the end of the day.
 
-=== 
+A bit more control you get when you use the https://azure.microsoft.com/en-us/services/devtest-lab/[Azure DevTest labs]. With policies you can 
+
+=== Runbooks
+
+
 
