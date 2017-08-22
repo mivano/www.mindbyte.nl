@@ -5,6 +5,8 @@
 // :hp-tags: HubPress, Blog, Open_Source,
 // :hp-alt-title: My English Title
 
+:hp-tags: azure
+
 = Save money in Azure by shutting down VMs
 
 In Azure you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so any time you are ot using the VM, you can save money by turning it off. You need to be careful though as turning it off from within the VM moves it to a stop state but still incur cost. You need to make sure to deallocate the resources. Only in this state you will not be https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/[charged].
@@ -52,7 +54,17 @@ We see we can use the Azure CLI but need something to execute this command at a 
 
 Create a new repository, drop the files from the https://github.com/mivano/AzureTooling/tree/master/StartStop[StartStop folder] in there and commit. This is not a hard requirement but having your scripts under source control is easier in maintaining them.
 
-Next, create a new empty build, point to your 
+Next, create a new empty build, point to your repository and add the Azure CLI task. Select the Start or StopVMsByTag.sh file. As the argument enter the tag that you used to mark the VMs that should be turned off or on. With a scheduled trigger you set up a schedule so the build will be execute every morning, evening, weekend etc. 
+
+image::azurestopvms.png[]
+
+Create a similar build that does the reverse of what you just did; so run a build in the morning to start all the VMs in the subscription having the tag _AutoStart_ and have a build in the evening to deallocate all the machines having the tag _AutoShutdown_. 
+
+You can play with different tags and schedules if that makes more sense.
+
+== Conclusion
+
+There are various ways to move VMs to a deallocated state and even options to turn it back on. Remember this will save you a lot of money (24*31=744 compared to e.g. 8*5*4=160 hours). If you already have VSTS then it is a matter of using the Azure CLI task and some clever schedules and tags.
 
 
 
