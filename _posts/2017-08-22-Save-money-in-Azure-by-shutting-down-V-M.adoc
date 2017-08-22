@@ -39,9 +39,17 @@ image::azureautoshutdown.png[]
 
 This does not include an option to start the VM automatically. Do consider if this is really needed. This option can make sure you do not forget to turn off the machine at the end of the day.
 
-A bit more control you get when you use the https://azure.microsoft.com/en-us/services/devtest-lab/[Azure DevTest labs]. With policies you can 
+More control you get when you use the https://azure.microsoft.com/en-us/services/devtest-lab/[Azure DevTest labs]. With policies you can specify start and shutdown rules for the Virtual Machines inside the lab.
 
 === Runbooks
+
+Using Azure Automation you can also setup runbooks that can do similar things. A more complicated version is https://docs.microsoft.com/en-us/azure/automation/automation-solution-vm-management[this one] and for a more simple version you can implement https://gallery.technet.microsoft.com/scriptcenter/Scheduled-Virtual-Machine-2162ac63[this one]. 
+By applying tags to the machines you can specify schedules.
+
+== Visual Studio Team Services
+
+We see we can use the Azure CLI but need something to execute this command at a certain time. Azure Automation can do this, but we can also use VSTS as it has a build system with a scheduler. 
+
 
 
 
