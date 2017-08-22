@@ -1,0 +1,12 @@
+// = Your Blog title
+// See https://hubpress.gitbooks.io/hubpress-knowledgebase/content/ for information about the parameters.
+// :hp-image: /covers/cover.png
+// :published_at: 2019-01-31
+// :hp-tags: HubPress, Blog, Open_Source,
+// :hp-alt-title: My English Title
+
+= Save money in Azure by shutting down VMs
+
+In Azure you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so any time you are ot using the VM, you can save money by turning it off. You need to be careful though as turning it off from within the VM moves it to a stop state but still incur cost. You need to make sure to deallocate the resources. Only in this state you will not be https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/[charged].
+
+So how to actually make sure the VM is deallocated? Easiest way is to use the https://portal.azure.com[Azure Portal]. Go to the virtual machine and select the Stop option. In the overview you will see a *Stopped (deallocated)* appear which means that the 
