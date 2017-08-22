@@ -1,23 +1,17 @@
-// = Your Blog title
-// See https://hubpress.gitbooks.io/hubpress-knowledgebase/content/ for information about the parameters.
-// :hp-image: /covers/cover.png
-// :published_at: 2019-01-31
-// :hp-tags: HubPress, Blog, Open_Source,
-// :hp-alt-title: My English Title
-
 :hp-tags: azure
+:hp-image: http://mindbyte.nl/images/azurestopvms.png
 
 = Save money in Azure by shutting down VMs
 
-In Azure you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so any time you are ot using the VM, you can save money by turning it off. You need to be careful though as turning it off from within the VM moves it to a stop state but still incur cost. You need to make sure to deallocate the resources. Only in this state you will not be https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/[charged].
+In Azure you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so any time you are not using the VM, you can save money by turning it off. You need to be careful though as turning it off from within the VM moves it to a stop state but still incur cost. You need to make sure to deallocate the resources. Only in this state you will not be https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/[charged].
 
 So how to actually make sure the VM is deallocated? Easiest way is to use the https://portal.azure.com[Azure Portal]. Go to the virtual machine and select the Stop option. In the overview you will see a *Stopped (deallocated)* appear which means that the VM has no cores assigned to it anymore and you will no longer be billed for it.
 
 == Automation
 
-Doing it manually is nice, but using automation is better. There are various ways to talk to the Azure APIs, but the Azure CLI is pretty simple to use. Make sure you install it using the https://docs.microsoft.com/en-us/cli/azure/install-azure-cli[documentation here].
+Doing it manually is nice, but using automation is better. There are various ways to talk to the Azure APIs, but the Azure CLI is pretty simple to use. Make sure you install it using the https://docs.microsoft.com/en-us/cli/azure/install-azure-cli[documentation] first.
 
-With the following command you can deallocate the VM called ubuntu in the resource group vm-auto-rg:
+With the following command you can deallocate the VM called _ubuntu_ in the resource group _vm-auto-rg_:
 
 ```shell
 az vm deallocate --name ubuntu --resource-group vm-auto-rg
@@ -31,30 +25,40 @@ az vm start --name ubuntu --resource-group vm-auto-rg
 
 Instead of name and resource group you can also use the --id option to pass in the identifier of the machine. Another useful option is to add the --no-wait option which indeed does not wait for the response.
 
-Be aware; you can also do a stop command, which will mean the machine will be billed.
+Be aware; you can also do a stop command, but this will mean the machine is still billable.
 
 === Auto shutdown
 
-The above command you still need to run manually, but luckily there are options in Azure to help you. Inside the VM there is an Auto-shutdown page where you indicate a schedule to automatically shutdown (deallocate) your VM.
+The above command you need to run manually, but luckily there are options in Azure to help you. Inside the VM there is an Auto-shutdown page where you indicate a schedule to automatically shutdown (deallocate) your VM.
 
 image::azureautoshutdown.png[]
 
-This does not include an option to start the VM automatically. Do consider if this is really needed. This option can make sure you do not forget to turn off the machine at the end of the day.
+This does not include an option to start the VM automatically. Do consider if this is really needed, a manual start can be a better approauch. This option can make sure you do not forget to turn off the machine at the end of the day.
 
 More control you get when you use the https://azure.microsoft.com/en-us/services/devtest-lab/[Azure DevTest labs]. With policies you can specify start and shutdown rules for the Virtual Machines inside the lab.
 
 === Runbooks
 
 Using Azure Automation you can also setup runbooks that can do similar things. A more complicated version is https://docs.microsoft.com/en-us/azure/automation/automation-solution-vm-management[this one] and for a more simple version you can implement https://gallery.technet.microsoft.com/scriptcenter/Scheduled-Virtual-Machine-2162ac63[this one]. 
-By applying tags to the machines you can specify schedules.
+By applying tags to the machines you can specify more complex schedules.
 
 == Visual Studio Team Services
 
 We see we can use the Azure CLI but need something to execute this command at a certain time. Azure Automation can do this, but we can also use VSTS as it has a build system with a scheduler. One of the tasks in VSTS is the Azure CLI task. Not only does it login for you and set a subscription, it will also execute either inline script or a file from your source control.
 
-Create a new repository, drop the files from the https://github.com/mivano/AzureTooling/tree/master/StartStop[StartStop folder] in there and commit. This is not a hard requirement but having your scripts under source control is easier in maintaining them.
+That command is a one liner:
 
-Next, create a new empty build, point to your repository and add the Azure CLI task. Select the Start or StopVMsByTag.sh file. As the argument enter the tag that you used to mark the VMs that should be turned off or on. With a scheduled trigger you set up a schedule so the build will be execute every morning, evening, weekend etc. 
+```shell
+az vm deallocate --no-wait --ids $(az resource list --tag "$1" --query "[?type=='Microsoft.Compute/virtualMachines'].id" -o tsv)
+```
+
+It will find all machines of type VM and having a specific tag. The resulting list will be used as argument for the ids parameter.
+
+So how to set this up:
+
+Create a new repository, drop the files from the https://github.com/mivano/AzureTooling/tree/master/StartStop[StartStop folder] in there and commit. This is not a hard requirement but having your scripts under source control is easier for maintaining them.
+
+Next, create a new empty build, point to your repository and add the Azure CLI task. Select the StartVMsByTags.sh or StopVMsByTag.sh file. As the argument, enter the tag that you used to mark the VMs that should be turned off or on. With a scheduled trigger you set up a schedule so the build will be execute every morning, evening, weekend etc. 
 
 image::azurestopvms.png[]
 
