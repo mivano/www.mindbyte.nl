@@ -4,15 +4,15 @@
 
 There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here.
 
-The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you will have a Kubernetes cluster running in Azure and you can connect to it via your webbrowser.
+The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you will have a Kubernetes cluster running in Azure and you can connect to it via your web browser.
 
 == Install the Azure CLI
 
 Make sure you install the Azure command line interface. Version 2 is the current one which allows you to use the *az* command.
 
-The instruction depends on the type of operation system, but all the steps are outlined in the https://docs.microsoft.com/en-us/cli/azure/install-azure-cli[Microsoft documentation]. 
+The instruction depends on the type of operating system, but all the steps are outlined in the https://docs.microsoft.com/en-us/cli/azure/install-azure-cli[Microsoft documentation]. 
 
-I'm using Windows here, so I could just https://aka.ms/InstallAzureCliWindows[download] the MSI directly. Follow the setup and when done, open a powershell box and type
+I'm using Windows here, so I could just https://aka.ms/InstallAzureCliWindows[download] the MSI directly. Follow the setup and when done, open a PowerShell box and type
 
 [source,powershell]
 ----
@@ -25,14 +25,14 @@ image::az.png[]
 
 If it does not, make sure you installed it correctly, have it in your path, reopen a command prompt (to refetch the environment variables).
 
-We first need to login, so issue the following:
+We first need to log in, so issue the following:
 
 [source,PowerShell]
 ----
 az login
 ----
 
-This will point you to a webpage where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.
+This will point you to a web page where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.
 
 Time to start deploying...
 
@@ -58,7 +58,7 @@ Installing a Kubernetes cluster works via the same AZ tooling since it allows yo
 az acs create --orchestrator-type=kubernetes --resource-group=kub-rg --name=mivano-kub-cluster --dns-prefix=mivano-kub --generate-ssh-key
 ----
 
-We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and dns prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.
+We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and DNS prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.
 
 Once completed it will show you an overview.
 
@@ -84,7 +84,7 @@ We now need to tell kubectl how to connect to our Kubernetes cluster. Luckily th
 az acs kubernetes get-credentials --resource-group=kub-rg --name=mivano-kub-cluster
 ----
 
-This will not return anything, so lets check if we are indeed able to connect.
+This will not return anything, so let's check if we are indeed able to connect.
 
 [source,PowerShell]
 ----
@@ -123,5 +123,5 @@ This will take some time to complete.
 
 == Conclusion
 
-With some easy tools you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling you can scale you cluster and talk to Kubernetes or invoke the web UI. Lets see in further posts what we can do with this cluster.
+With some easy tools, you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling, you can scale your cluster and talk to Kubernetes or invoke the web UI. Let's see in further posts what we can do with this cluster.
 
