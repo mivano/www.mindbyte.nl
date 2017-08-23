@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>http://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Wed, 23 Aug 2017 19:43:35 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Password complexity]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>http://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Wed, 23 Aug 2017 19:49:04 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Password complexity]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Creating a password for any site or service is difficult enough, but even more when the password needs to comply with a password policy. Minimum length, number of digits, uppercase and lowercase mixes and nonalphabetical characters are favorites. And with a bit of luck, it should also not be the same password as used in the last x password resets. Combine that with a password age so the user needs to do this exercise every number of days.</p>
@@ -128,7 +128,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here.</p>
 </div>
 <div class="paragraph">
-<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you will have a Kubernetes cluster running in Azure and you can connect to it via your webbrowser.</p>
+<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you will have a Kubernetes cluster running in Azure and you can connect to it via your web browser.</p>
 </div>
 </div>
 </div>
@@ -139,10 +139,10 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>Make sure you install the Azure command line interface. Version 2 is the current one which allows you to use the <strong>az</strong> command.</p>
 </div>
 <div class="paragraph">
-<p>The instruction depends on the type of operation system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
+<p>The instruction depends on the type of operating system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a powershell box and type</p>
+<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a PowerShell box and type</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -161,7 +161,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>If it does not, make sure you installed it correctly, have it in your path, reopen a command prompt (to refetch the environment variables).</p>
 </div>
 <div class="paragraph">
-<p>We first need to login, so issue the following:</p>
+<p>We first need to log in, so issue the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -169,7 +169,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 </div>
 </div>
 <div class="paragraph">
-<p>This will point you to a webpage where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
+<p>This will point you to a web page where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
 </div>
 <div class="paragraph">
 <p>Time to start deploying&#8230;&#8203;</p>
@@ -209,7 +209,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 </div>
 </div>
 <div class="paragraph">
-<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and dns prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
+<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and DNS prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
 </div>
 <div class="paragraph">
 <p>Once completed it will show you an overview.</p>
@@ -251,7 +251,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 </div>
 </div>
 <div class="paragraph">
-<p>This will not return anything, so lets check if we are indeed able to connect.</p>
+<p>This will not return anything, so let&#8217;s check if we are indeed able to connect.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -312,7 +312,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With some easy tools you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling you can scale you cluster and talk to Kubernetes or invoke the web UI. Lets see in further posts what we can do with this cluster.</p>
+<p>With some easy tools, you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling, you can scale your cluster and talk to Kubernetes or invoke the web UI. Let&#8217;s see in further posts what we can do with this cluster.</p>
 </div>
 </div>
 </div>]]></description><link>http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html</link><guid isPermaLink="true">http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html</guid><category><![CDATA[azure]]></category><category><![CDATA[docker]]></category><category><![CDATA[kubernetes]]></category><dc:creator><![CDATA[Michiel van Oudheusden]]></dc:creator><pubDate>Sat, 05 Aug 2017 00:00:00 GMT</pubDate></item></channel></rss>
