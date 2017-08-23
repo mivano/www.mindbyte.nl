@@ -23,17 +23,17 @@ Starting the same machine is easy too:
 az vm start --name ubuntu --resource-group vm-auto-rg
 ```
 
-Instead of name and resource group you can also use the --id option to pass in the identifier of the machine. Another useful option is to add the --no-wait option which indeed does not wait for the response.
+Instead of name and resource group you can also use the *--ids* option to pass in the identifier of the machine. Another useful option is to add the *--no-wait* option which indeed does not wait for the response to be returned.
 
-Be aware; you can also do a stop command, but this will mean the machine is still billable.
+Be aware; you can also do a stop with AZ command, but this will mean the machine is still billable.
 
 === Auto shutdown
 
-The above command you need to run manually, but luckily there are options in Azure to help you. Inside the VM there is an Auto-shutdown page where you indicate a schedule to automatically shutdown (deallocate) your VM.
+The above command you need to run manually, but luckily there are options in the Azure portal to help you. Inside the VM blade there is an Auto-shutdown section where you indicate a schedule to automatically shutdown (meaning deallocate) your VM.
 
 image::azureautoshutdown.png[]
 
-This does not include an option to start the VM automatically. Do consider if this is really needed, a manual start can be a better approauch. This option can make sure you do not forget to turn off the machine at the end of the day.
+However this does not include an option to start the VM automatically. Do consider if this is really needed, a manual start can be a better approach. This option can make sure you do not forget to turn off the machine at the end of the day.
 
 More control you get when you use the https://azure.microsoft.com/en-us/services/devtest-lab/[Azure DevTest labs]. With policies you can specify start and shutdown rules for the Virtual Machines inside the lab.
 
