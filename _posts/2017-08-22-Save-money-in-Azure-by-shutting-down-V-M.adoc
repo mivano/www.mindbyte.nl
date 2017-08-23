@@ -52,7 +52,7 @@ That command is a one liner:
 az vm deallocate --no-wait --ids $(az resource list --tag "$1" --query "[?type=='Microsoft.Compute/virtualMachines'].id" -o tsv)
 ```
 
-It will find all machines of type VM and having a specific tag. The resulting list will be used as argument for the ids parameter.
+It will find all machines of type VM and having a specific tag. The resulting list will be used as argument for the ids parameter to the AZ command. The $1 is used to capture the first parameter passed to the shell script.
 
 So how to set this up:
 
@@ -68,7 +68,7 @@ You can play with different tags and schedules if that makes more sense.
 
 == Conclusion
 
-There are various ways to move VMs to a deallocated state and even options to turn it back on. Remember this will save you a lot of money (24*31=744 compared to e.g. 8*5*4=160 hours). If you already have VSTS then it is a matter of using the Azure CLI task and some clever schedules and tags.
+There are various ways to move VMs to a deallocated state and even options to turn it back on. Remember this will save you a lot of money (24*31=744 compared to e.g. 8*5*4=160 hours). If you already have VSTS then it is a matter of using the Azure CLI task and some clever schedules and tags to get the same experience and start saving money.
 
 
 
