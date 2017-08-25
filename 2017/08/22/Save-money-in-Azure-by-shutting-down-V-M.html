@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Save money in Azure by shutting down VMs - Michiel van Oudheusden</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Save money in Azure by shutting down VMs">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Save money in Azure by shutting down VMs">
+    <meta property="og:description" content="">
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1503693460679" />
+
+    <link rel="canonical" href="http://mindbyte.nl/2017/08/22/Save-money-in-Azure-by-shutting-down-V-M.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Michiel van Oudheusden" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Save money in Azure by shutting down VMs" />
+    <meta property="og:description" content="In Azure, you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so anytime you are not using the VM, you can save money by turning it off. You need" />
+    <meta property="og:url" content="http://mindbyte.nl/2017/08/22/Save-money-in-Azure-by-shutting-down-V-M.html" />
+    <meta property="og:image" content="http://mindbyte.nl/images/azurestopvms.png" />
+    <meta property="article:published_time" content="2017-08-22T00:00:00.000Z" />
+    <meta property="article:tag" content="azure" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Save money in Azure by shutting down VMs" />
+    <meta name="twitter:description" content="In Azure, you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so anytime you are not using the VM, you can save money by turning it off. You need" />
+    <meta name="twitter:url" content="http://mindbyte.nl/2017/08/22/Save-money-in-Azure-by-shutting-down-V-M.html" />
+    <meta name="twitter:image:src" content="http://mindbyte.nl/images/azurestopvms.png" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Michiel van Oudheusden",
+    "author": {
+        "@type": "Person",
+        "name": "Michiel van Oudheusden",
+        "image": "https://avatars2.githubusercontent.com/u/668535?v=4",
+        "url": "http://mindbyte.nl/author/mivano/"
+    },
+    "headline": "Save money in Azure by shutting down VMs",
+    "url": "http://mindbyte.nl/2017/08/22/Save-money-in-Azure-by-shutting-down-V-M.html",
+    "datePublished": "2017-08-22T00:00:00.000Z",
+    "image": "http://mindbyte.nl/images/azurestopvms.png",
+    "keywords": "azure",
+    "description": "In Azure, you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so anytime you are not using the VM, you can save money by turning it off. You need"
+}
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Michiel van Oudheusden" href="http://mindbyte.nl/rss/" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/atom-one-dark.min.css">
+
+</head>
+<body class="post-template tag-azure no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed " style="background-image: url(http://mindbyte.nl/images/servers.png)">
+      <div class="panel-main">
+    
+        <div class="panel-main__inner panel-inverted">
+        <div class="panel-main__content">
+    
+            <a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden"><img src="https://avatars1.githubusercontent.com/u/668535?v&#x3D;3&amp;s&#x3D;460" width="80" alt="Michiel van Oudheusden logo" class="panel-cover__logo logo" /></a>
+            <h1 class="panel-cover__title panel-title"><a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden">Michiel van Oudheusden</a></h1>
+            <hr class="panel-cover__divider" />
+            <p class="panel-cover__description">Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.</p>
+            <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+            <div class="navigation-wrapper">
+    
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="http://mindbyte.nl/#blog" title="link to Michiel van Oudheusden blog" class="blog-button">Blog</a></li>
+                </ul>
+              </nav>
+    
+              
+              
+              <nav class="cover-navigation navigation--social">
+                <ul class="navigation">
+              
+              
+                  <!-- Twitter -->
+                  <li class="navigation__item">
+                    <a href="http://twitter.com/mivano" title="Twitter account">
+                      <i class='icon icon-social-twitter'></i>
+                      <span class="label">Twitter</span>
+                    </a>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="http://github.com/mivano" title="Github account">
+                      <i class='icon icon-social-github'></i>
+                      <span class="label">Github</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="http://nl.pinterest.com/mivano/" title="Pinterest account">
+                      <i class='icon icon-social-pinterest'></i>
+                      <span class="label">Pinterest</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- LinkedIn -->
+                  <li class="navigation__item">
+                    <a href="https://www.linkedin.com/in/michielvanoudheusden" title="LinkedIn account">
+                      <i class='icon icon-social-linkedin'></i>
+                      <span class="label">LinkedIn</span>
+                    </a>
+                  </li>
+              
+              
+                </ul>
+              </nav>
+              
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="panel-cover--overlay"></div>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="22 Aug 2017" class="post-meta__date date">22 Aug 2017</time> &#8226; <span class="post-meta__tags tags">on <a href="http://mindbyte.nl/tag/azure/">azure</a></span>
+        <span class="post-meta__author author"><img src="https://avatars2.githubusercontent.com/u/668535?v&#x3D;4" alt="profile image for Michiel van Oudheusden" class="avatar post-meta__avatar" /> by Michiel van Oudheusden</span>
+      </div>
+      <h1 class="post-title">Save money in Azure by shutting down VMs</h1>
+    </header>
+
+    <section class="post tag-azure">
+      <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In Azure, you pay for what you use. And when we talk about virtual machines, this means that you pay for the compute, network and storage. This is charged by the minute, so anytime you are not using the VM, you can save money by turning it off. You need to be careful though as turning it off from within the VM moves it to a stop state but still incur a cost. You need to make sure to deallocate the resources. Only in this state, you will not be <a href="https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/">charged</a>.</p>
+</div>
+<div class="paragraph">
+<p>So how to actually make sure the VM is deallocated? The easiest way is to use the <a href="https://portal.azure.com">Azure Portal</a>. Go to the virtual machine and select the Stop option. In the overview section you will see a <strong>Stopped (deallocated)</strong> appear which means that the VM has no cores assigned to it anymore and you will no longer be billed for it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_automation">Automation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Doing it manually is nice, but using automation is better. There are various ways to talk to the Azure APIs, but the Azure CLI is pretty simple to use. Make sure you install it using the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">documentation</a> first.</p>
+</div>
+<div class="paragraph">
+<p>With the following command you can deallocate the VM called <em>ubuntu</em> in the resource group <em>vm-auto-rg</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">az vm deallocate --name ubuntu --resource-group vm-auto-rg</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Starting the same machine is easy too:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">az vm start --name ubuntu --resource-group vm-auto-rg</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Instead of name and resource group, you can also use the <strong>--ids</strong> option to pass in the identifier of the machine. Another useful option is to add the <strong>--no-wait</strong> option which indeed does not wait for the response to be returned.</p>
+</div>
+<div class="paragraph">
+<p>Be aware; you can also do a stop with AZ command, but this will mean the machine is still billable.</p>
+</div>
+<div class="sect2">
+<h3 id="_auto_shutdown">Auto shutdown</h3>
+<div class="paragraph">
+<p>The above command you need to run manually, but luckily there are options in the Azure portal to help you. Inside the VM blade, there is an Auto-shutdown section where you indicate a schedule to automatically shutdown (meaning deallocate) your VM.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/azureautoshutdown.png" alt="azureautoshutdown.png">
+</div>
+</div>
+<div class="paragraph">
+<p>However, this does not include an option to start the VM automatically. Do consider if this is really needed, a manual start can be a better approach. This option can make sure you do not forget to turn off the machine at the end of the day.</p>
+</div>
+<div class="paragraph">
+<p>More control you get when you use the <a href="https://azure.microsoft.com/en-us/services/devtest-lab/">Azure DevTest labs</a>. With policies, you can specify start and shutdown rules for the Virtual Machines inside the lab.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_runbooks">Runbooks</h3>
+<div class="paragraph">
+<p>Using Azure Automation you can also setup runbooks that can do similar things. A more complicated version is <a href="https://docs.microsoft.com/en-us/azure/automation/automation-solution-vm-management">this one</a> and for a more simple version, you can implement <a href="https://gallery.technet.microsoft.com/scriptcenter/Scheduled-Virtual-Machine-2162ac63">this one</a>.
+By applying tags to the machines you can specify more complex schedules.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_visual_studio_team_services">Visual Studio Team Services</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We see we can use the Azure CLI but need something to execute this command at a certain time. Azure Automation can do this, but we can also use VSTS as it has a build system with a scheduler. One of the tasks in VSTS is the Azure CLI task. Not only does it log in for you and set a subscription, it will also execute either inline script or a file from your source control.</p>
+</div>
+<div class="paragraph">
+<p>That shell command is a one liner:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">az vm deallocate --no-wait --ids $(az resource list --tag "$1" --query "[?type=='Microsoft.Compute/virtualMachines'].id" -o tsv)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will find all machines of type VM and contain a specific tag. The resulting list will be used as the argument for the ids parameter to the AZ command. The $1 is used to capture the first parameter passed to the shell script.</p>
+</div>
+<div class="paragraph">
+<p>We will use a Windows agent, so we need to make sure python and the AZ CLI are installed. Normally they are part of the hosted agents although at the time of writing <a href="https://github.com/Microsoft/vsts-tasks/issues/5077">this is not the case</a>. No worries, we will just install it using a PowerShell command.</p>
+</div>
+<div class="paragraph">
+<p>So how to set this up:</p>
+</div>
+<div class="paragraph">
+<p>Create a new repository, drop the files from the <a href="https://github.com/mivano/AzureTooling/tree/master/StartStop">StartStop folder</a> in there and commit. This is not a hard requirement but having your scripts under source control is easier for maintaining them. However, you can also use inline scripts.</p>
+</div>
+<div class="paragraph">
+<p>Next, create a new empty build, point to your repository and add a PowerShell task. We can use the inline script option and use the following as the scripts contents:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-powershell" data-lang="powershell">&amp;'C:\Program Files\Python36\python.exe' -m pip install --user azure-cli
+Write-host '##vso[task.prependpath]C:\Program Files\Python36'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, add the Azure CLI task. Select the StartVMsByTags.bat or StopVMsByTag.bat file. We are using a Windows host, so we need a batch file instead of a shell script, but both are included in the git repository. As the argument, enter the tag that you used to mark the VMs that should be turned off or on. With a scheduled trigger you set up a schedule so the build will be executed every morning, evening, weekend etc.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/azurestopvms.png" alt="azurestopvms.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Create a similar build that does the reverse of what you just did; so run a build in the morning to start all the VMs in the subscription having the tag <em>AutoStart</em> and have a build in the evening to deallocate all the machines having the tag <em>AutoShutdown</em>.</p>
+</div>
+<div class="paragraph">
+<p>You can play with different tags and schedules if that makes more sense. Do note that deallocating releases resources on the Virtual Machines, including IP addresses and when set to dynamic, you might not get the same IP back.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are various ways to move VMs to a deallocated state and even options to turn it back on. Remember this will save you a lot of money (24*31=744 compared to e.g. 8*5*4=160 hours). If you already have VSTS then it is a matter of using the Azure CLI task and some clever schedules and tags to get the same experience and start saving money.</p>
+</div>
+</div>
+</div>
+    </section>
+
+  </article>
+
+  
+  <section class="post-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'mivano'; // required: replace example with your forum shortname
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+  
+
+
+
+            <footer class="footer">
+                <span class="footer__copyright">&copy; 2017. All rights reserved.</span>
+                <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+                <span class="footer__copyright">Proudly published with <a href="http://hubpress.io" title="link to Hubpress website">Hubpress</a></span>
+            </footer>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+       
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1503693460679"></script>
+    
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-59660007-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>
