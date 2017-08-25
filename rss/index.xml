@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>http://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Tue, 22 Aug 2017 19:23:19 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Password complexity]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>http://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Wed, 23 Aug 2017 19:49:04 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Password complexity]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Creating a password for any site or service is difficult enough, but even more when the password needs to comply to a password policy. Minimum length, number of digits, uppercase and lowercase mixes and non alphabetical characters are favorites. And with a bit of luck it should also not be the same password as used in the last x password resets. Combine that with a password age so the user need to do this excercise every number of days.</p>
+<p>Creating a password for any site or service is difficult enough, but even more when the password needs to comply with a password policy. Minimum length, number of digits, uppercase and lowercase mixes and nonalphabetical characters are favorites. And with a bit of luck, it should also not be the same password as used in the last x password resets. Combine that with a password age so the user needs to do this exercise every number of days.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -9,10 +9,10 @@
 </div>
 </div>
 <div class="paragraph">
-<p>What we get is either a technical capable person using a password helper with long random passwords or someone with a <em>complex</em> password used on all sites. When it needs renewal, it normally has a sequential number added to it.</p>
+<p>What we get is either a technically capable person using a password helper with long random passwords or someone with a <em>complex</em> password used on all sites. When it needs renewal, it normally has a sequential number added to it.</p>
 </div>
 <div class="paragraph">
-<p>So creating secure and safe passwords is a challenge for sure. Passwords that look very secure, as in they match the password complexity rules, are actually not secure at all. Take for example <strong>&amp;Password1</strong>, which is of a decent size, has lower and uppercase characters, has a digit and even a non-alphabetical character. Even when we use common words it is quite often the first character which is a uppercase. A <em>e</em> becomes a <em>3</em>, a <em>0</em> for an <em>o</em> etc. Hackers know this so almost all the dictionary attacks have these words and their variations in their list.
+<p>So creating secure and safe passwords is a challenge for sure. Passwords that look very secure, as in they match the password complexity rules, are actually not secure at all. Take for example <strong>&amp;Password1</strong>, which is of a decent size, has lower and uppercase characters, has a digit and even a non-alphabetical character. Even when we use common words it is quite often the first character which is a uppercase. A <em>e</em> becomes a <em>3</em>, a <em>0</em> for an <em>o</em> etc. Hackers know this so almost all the dictionary attacks have these words and their variations on their list.
 Of course making it complex will make it harder to hack, but also harder to remember by the actual user.</p>
 </div>
 <div class="imageblock">
@@ -62,22 +62,22 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>This is a pretty interesting one; after a lot of breaches where passwords have been made public, there is now a list of <a href="https://www.troyhunt.com/introducing-306-million-freely-downloadable-pwned-passwords/">306,259,512 unique passwords</a> which were used in those breaches. It shows that people tend to stick with common and simple passwords.</p>
 </div>
 <div class="paragraph">
-<p>So the first step in your application where a user need to select a password is to check if it is used in a previous breach. Troy Hunt published a list and <a href="https://www.troyhunt.com/introducing-306-million-freely-downloadable-pwned-passwords/">some guidance</a> on how to do this.</p>
+<p>So the first step in your application where a user needs to select a password is to check if it is used in a previous breach. Troy Hunt published a list and <a href="https://www.troyhunt.com/introducing-306-million-freely-downloadable-pwned-passwords/">some guidance</a> on how to do this.</p>
 </div>
 <div class="paragraph">
 <p>Either download the full file and do this check in your application (more control, no dependency) or use his API (make sure to hash the password before sending).</p>
 </div>
 <div class="paragraph">
-<p>Alternatively there are system like <a href="https://blogs.dropbox.com/tech/2012/04/zxcvbn-realistic-password-strength-estimation/">Dropbox zxcvbn</a> which will check against patterns, a common list and the amount of time it takes to guess the password. The script will return a value and tip which can be used in a <a href="https://github.com/dropbox/zxcvbn#usage">password strength meter</a> to the user.</p>
+<p>Alternatively, there are systems like <a href="https://blogs.dropbox.com/tech/2012/04/zxcvbn-realistic-password-strength-estimation/">Dropbox zxcvbn</a> which will check against patterns, a common list and the amount of time it takes to guess the password. The script will return a value and tip which can be used in a <a href="https://github.com/dropbox/zxcvbn#usage">password strength meter</a> to the user.</p>
 </div>
 <div class="paragraph">
-<p>Make sure to also include user specific elements like username, email, fullname etc so the user cannot mix or use them in the password. Same applies to the name of your service/application.</p>
+<p>Make sure to also include user specific elements like username, email, full-name etc so the user cannot mix or use them in the password. Same applies to the name of your service/application.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_multi_factor_authentication">Multi factor authentication</h3>
 <div class="paragraph">
-<p>Something you know, something you have and something you are. A password is something you know. Checking a fingerprint or iris is what you are, although this is harder to check. So the something you have is a populair second factor authentication method.</p>
+<p>Something you know, something you have and something you are. A password is something you know. Checking a fingerprint or iris is what you are, although this is harder to check. So the something you have is a popular second-factor authentication method.</p>
 </div>
 <div class="paragraph">
 <p>If the user has a key generator (even a soft one), it is pretty easy to <a href="http://brandonpotter.com/2014/09/07/implementing-free-two-factor-authentication-in-net-using-google-authenticator/">generate One Time Passwords</a>. Other options are SMS or phone delivery (user need to confirm the ownership of the phone) or using email (same as with phone, make sure to confirm the email address is of the user first).</p>
@@ -89,19 +89,19 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <div class="sect2">
 <h3 id="_third_parties">Third parties</h3>
 <div class="paragraph">
-<p>Consider also if you do want to maintain passwords at all. There is a lot of hassle and issues associated with this. Sometimes this is unavoidable, but it might in other cases be an option to leverage other services which can spend more time, money and resources on this area.</p>
+<p>Consider also if you do want to maintain passwords at all. There is a lot of hassle and issues associated with this. Sometimes this is unavoidable, but it might in other cases be an option to leverage other services which can spend more time, money and resources in this area.</p>
 </div>
 <div class="paragraph">
-<p>For more <strong>business to consumers</strong> markets you can use Facebook, Google, Twitter etc as an authentication provider. If it is more <strong>business to business</strong>, consider to use for example Azure Active Directory.</p>
+<p>For the more <strong>business to consumers</strong> markets you can use Facebook, Google, Twitter etc as an authentication provider. If it is more <strong>business to business</strong>, consider using, for example, Azure Active Directory.</p>
 </div>
 <div class="paragraph">
-<p>Be aware that you do create a dependency and lose control in favor of other benefits you might get. If you want to keep it all in house, make use of <a href="https://identityserver.io/">Identity Server</a> and as such leverage a proven and extensive authentication system. Implementing your own security is always a bad idea :-).</p>
+<p>Be aware that you do create a dependency and lose control in favor of other benefits you might get. If you want to keep it all in-house, make use of <a href="https://identityserver.io/">Identity Server</a> and as such leverage a proven and extensive authentication system. Implementing your own security is always a bad idea :-).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_other_options">Other options</h3>
 <div class="paragraph">
-<p>Do you always need passwords? You can also just use tokens and send a link per email to the user when he tries to login in. The <a href="https://auth0.com/blog/how-passwordless-authentication-works/">passwordless authentication</a> is pretty easy. No burden at your side to maintain passwords, do resets, get stuff stolen when there is a breach etc. However you need to trust the delivery mechanism like email and the speed of the delivery. More and more services are offering this next to their normal login as it is less typing and easier for their users, certainly with <a href="https://www.drzon.net/posts/passwordless-login-in-mobile-apps/">mobile applications</a>.</p>
+<p>Do you always need passwords? You can also just use tokens and send a link per email to the user when he tries to login in. The <a href="https://auth0.com/blog/how-passwordless-authentication-works/">passwordless authentication</a> is pretty easy. No burden at your side to maintain passwords, do resets, get stuff stolen when there is a breach etc. However, you need to trust the delivery mechanism like email and the speed of the delivery. More and more services are offering this next to their normal login as it is less typing and easier for their users, certainly with <a href="https://www.drzon.net/posts/passwordless-login-in-mobile-apps/">mobile applications</a>.</p>
 </div>
 </div>
 </div>
@@ -110,10 +110,10 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Passwords are hard; hard to remember, hard to make secure. The best intent to make them complex by requiring a mix of character types and lengths does not help. Combined with commonly used words, common replacements and placements and repetative password resets, we make it our users pretty hard.</p>
+<p>Passwords are hard; hard to remember, hard to make secure. The best intent to make them complex by requiring a mix of character types and lengths does not help. Combined with commonly used words, common replacements and placements and repetitive password reset, we make it our users pretty hard.</p>
 </div>
 <div class="paragraph">
-<p>Support password generators (so do <a href="https://www.troyhunt.com/the-cobra-effect-that-is-disabling/">not disable clipboard paste</a> in your forms), do not have mandatory password resets and complexity, but do check against common patterns (common words, user specific values, patterns and passwords used in breaches) and keep checking and informing the user afterwards.</p>
+<p>Support password generators (so do <a href="https://www.troyhunt.com/the-cobra-effect-that-is-disabling/">not disable clipboard paste</a> in your forms), do not have mandatory password resets and complexity, but do check against common patterns (common words, user specific values, patterns and passwords used in breaches) and keep checking and informing the user afterward.</p>
 </div>
 <div class="paragraph">
 <p>Allow for and promote the use of multi factor authentication to add an additional layer of security.</p>
@@ -128,7 +128,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here.</p>
 </div>
 <div class="paragraph">
-<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you will have a Kubernetes cluster running in Azure and you can connect to it via your webbrowser.</p>
+<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you will have a Kubernetes cluster running in Azure and you can connect to it via your web browser.</p>
 </div>
 </div>
 </div>
@@ -139,10 +139,10 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>Make sure you install the Azure command line interface. Version 2 is the current one which allows you to use the <strong>az</strong> command.</p>
 </div>
 <div class="paragraph">
-<p>The instruction depends on the type of operation system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
+<p>The instruction depends on the type of operating system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a powershell box and type</p>
+<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a PowerShell box and type</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -161,7 +161,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <p>If it does not, make sure you installed it correctly, have it in your path, reopen a command prompt (to refetch the environment variables).</p>
 </div>
 <div class="paragraph">
-<p>We first need to login, so issue the following:</p>
+<p>We first need to log in, so issue the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -169,7 +169,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 </div>
 </div>
 <div class="paragraph">
-<p>This will point you to a webpage where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
+<p>This will point you to a web page where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
 </div>
 <div class="paragraph">
 <p>Time to start deploying&#8230;&#8203;</p>
@@ -209,7 +209,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 </div>
 </div>
 <div class="paragraph">
-<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and dns prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
+<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and DNS prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
 </div>
 <div class="paragraph">
 <p>Once completed it will show you an overview.</p>
@@ -251,7 +251,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 </div>
 </div>
 <div class="paragraph">
-<p>This will not return anything, so lets check if we are indeed able to connect.</p>
+<p>This will not return anything, so let&#8217;s check if we are indeed able to connect.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -312,7 +312,7 @@ Of course making it complex will make it harder to hack, but also harder to reme
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With some easy tools you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling you can scale you cluster and talk to Kubernetes or invoke the web UI. Lets see in further posts what we can do with this cluster.</p>
+<p>With some easy tools, you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling, you can scale your cluster and talk to Kubernetes or invoke the web UI. Let&#8217;s see in further posts what we can do with this cluster.</p>
 </div>
 </div>
 </div>]]></description><link>http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html</link><guid isPermaLink="true">http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html</guid><category><![CDATA[azure]]></category><category><![CDATA[docker]]></category><category><![CDATA[kubernetes]]></category><dc:creator><![CDATA[Michiel van Oudheusden]]></dc:creator><pubDate>Sat, 05 Aug 2017 00:00:00 GMT</pubDate></item></channel></rss>

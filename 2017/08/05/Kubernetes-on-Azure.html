@@ -25,7 +25,7 @@
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
 
-    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1502044507553" />
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1503517744130" />
 
     <link rel="canonical" href="http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html" />
     <meta name="referrer" content="origin" />
@@ -33,7 +33,7 @@
     <meta property="og:site_name" content="Michiel van Oudheusden" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Kubernetes on Azure" />
-    <meta property="og:description" content="There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here. The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you" />
+    <meta property="og:description" content="There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here. The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you" />
     <meta property="og:url" content="http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html" />
     <meta property="og:image" content="http://mindbyte.nl/images/kubui.png" />
     <meta property="article:published_time" content="2017-08-05T00:00:00.000Z" />
@@ -43,7 +43,7 @@
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Kubernetes on Azure" />
-    <meta name="twitter:description" content="There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here. The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you" />
+    <meta name="twitter:description" content="There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here. The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you" />
     <meta name="twitter:url" content="http://mindbyte.nl/2017/08/05/Kubernetes-on-Azure.html" />
     <meta name="twitter:image:src" content="http://mindbyte.nl/images/kubui.png" />
     
@@ -63,7 +63,7 @@
     "datePublished": "2017-08-05T00:00:00.000Z",
     "image": "http://mindbyte.nl/images/kubui.png",
     "keywords": "azure, docker, kubernetes",
-    "description": "There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here. The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you"
+    "description": "There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here. The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you"
 }
     </script>
 
@@ -178,7 +178,7 @@
 <p>There are a lot of resources on how to setup Kubernetes on Azure, but they require some prerequisites, so I wanted to make a step by step guide here.</p>
 </div>
 <div class="paragraph">
-<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end you will have a Kubernetes cluster running in Azure and you can connect to it via your webbrowser.</p>
+<p>The intent is not the explain what Kubernetes is and does, but to get you started quickly. At the end, you will have a Kubernetes cluster running in Azure and you can connect to it via your web browser.</p>
 </div>
 </div>
 </div>
@@ -189,10 +189,10 @@
 <p>Make sure you install the Azure command line interface. Version 2 is the current one which allows you to use the <strong>az</strong> command.</p>
 </div>
 <div class="paragraph">
-<p>The instruction depends on the type of operation system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
+<p>The instruction depends on the type of operating system, but all the steps are outlined in the <a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Microsoft documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a powershell box and type</p>
+<p>I&#8217;m using Windows here, so I could just <a href="https://aka.ms/InstallAzureCliWindows">download</a> the MSI directly. Follow the setup and when done, open a PowerShell box and type</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -211,7 +211,7 @@
 <p>If it does not, make sure you installed it correctly, have it in your path, reopen a command prompt (to refetch the environment variables).</p>
 </div>
 <div class="paragraph">
-<p>We first need to login, so issue the following:</p>
+<p>We first need to log in, so issue the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -219,7 +219,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>This will point you to a webpage where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
+<p>This will point you to a web page where you fill in the given code and login. When done, it has a connection between your account and the Azure tooling.</p>
 </div>
 <div class="paragraph">
 <p>Time to start deploying&#8230;&#8203;</p>
@@ -259,7 +259,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and dns prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
+<p>We create an Azure Container Service, using the kubernetes type option. We use our already created resource group and give it a name and DNS prefix. This will take some minutes before it completes. A Windows container option is in public preview, but can also be created by specifying the '--windows' option.</p>
 </div>
 <div class="paragraph">
 <p>Once completed it will show you an overview.</p>
@@ -301,7 +301,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>This will not return anything, so lets check if we are indeed able to connect.</p>
+<p>This will not return anything, so let&#8217;s check if we are indeed able to connect.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -362,7 +362,7 @@
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With some easy tools you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling you can scale you cluster and talk to Kubernetes or invoke the web UI. Lets see in further posts what we can do with this cluster.</p>
+<p>With some easy tools, you can spin up a Kubernetes cluster on Azure and connect it. With the same tooling, you can scale your cluster and talk to Kubernetes or invoke the web UI. Let&#8217;s see in further posts what we can do with this cluster.</p>
 </div>
 </div>
 </div>
@@ -412,7 +412,7 @@
        
     <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
-    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1502044507553"></script>
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1503517744130"></script>
     
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
