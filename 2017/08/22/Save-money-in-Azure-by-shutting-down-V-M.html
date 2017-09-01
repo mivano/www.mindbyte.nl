@@ -25,7 +25,7 @@
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
 
-    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1503694337006" />
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1504265710636" />
 
     <link rel="canonical" href="http://mindbyte.nl/2017/08/22/Save-money-in-Azure-by-shutting-down-V-M.html" />
     <meta name="referrer" content="origin" />
@@ -254,6 +254,9 @@ By applying tags to the machines you can specify more complex schedules.</p>
 <div class="paragraph">
 <p>We will use a Windows agent, so we need to make sure python and the AZ CLI are installed. Normally they are part of the hosted agents although at the time of writing <a href="https://github.com/Microsoft/vsts-tasks/issues/5077">this is not the case</a>. No worries, we will just install it using a PowerShell command.</p>
 </div>
+<div class="paragraph">
+<p><strong>Update 01/Sep/2017</strong> The issue is fixed and the hosted builds do have Python in the path and the tools installed. So the PowerShell step can be excluded.</p>
+</div>
 <div class="sect2">
 <h3 id="_so_how_to_set_this_up">So how to set this up</h3>
 <div class="paragraph">
@@ -339,7 +342,7 @@ Write-host '##vso[task.prependpath]C:\Program Files\Python36'</code></pre>
        
     <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
-    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1503694337006"></script>
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1504265710636"></script>
     
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
