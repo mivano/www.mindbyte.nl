@@ -38,8 +38,10 @@ if the second round has again differences, then you might consider to hear the l
 
 You can pick an avarage value instead as it will be an estimation afterall. Take some time in the retrospective to see if it was estimated correctly.
 
+== When
 
-
+Do these kinds of estimation rounds during your sprint. Take maybe 2 times an hour to go over new stories. Do not spend too much time on each story and if you see it stranding in all kinds of business discussions, throw it back to the product owner so they can work on a better story description.
+Try not to do refinement during the planning phase (in which you should decide which stories to actually pick up in your next sprint). At that time it is too late to get back to stakeholders with questions or do some investigations. 
 
 
 
