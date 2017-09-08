@@ -34,7 +34,7 @@
   },
   "urls": {
     "site": "http://mindbyte.nl",
-    "hubpress": "http://mindbyte.nl",
+    "hubpress": "https://mindbyte.nl",
     "theme": "//mindbyte.nl/themes/uno",
     "images": "http://mindbyte.nl/images"
   },
