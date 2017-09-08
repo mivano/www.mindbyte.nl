@@ -1,5 +1,5 @@
 :hp-tags: azure
-:hp-image: http://mindbyte.nl/images/azurestopvms.png
+:hp-image: https://mindbyte.nl/images/azurestopvms.png
 
 = Save money in Azure by shutting down VMs
 
