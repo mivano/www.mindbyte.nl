@@ -56,7 +56,9 @@ It will find all machines of type VM and contain a specific tag. The resulting l
 
 We will use a Windows agent, so we need to make sure python and the AZ CLI are installed. Normally they are part of the hosted agents although at the time of writing https://github.com/Microsoft/vsts-tasks/issues/5077[this is not the case]. No worries, we will just install it using a PowerShell command.
 
-So how to set this up:
+*Update 01/Sep/2017* The issue is fixed and the hosted builds do have Python in the path and the tools installed. So the PowerShell step can be excluded.
+
+=== So how to set this up
 
 Create a new repository, drop the files from the https://github.com/mivano/AzureTooling/tree/master/StartStop[StartStop folder] in there and commit. This is not a hard requirement but having your scripts under source control is easier for maintaining them. However, you can also use inline scripts.
 

@@ -13,14 +13,14 @@
     "googleAnalytics": "UA-59660007-1",
     "disqus": "mivano",
     "url": "http://mindbyte.nl",
-    "cover": "http://mindbyte.nl/images/servers.png",
+    "cover": "https://mindbyte.nl/images/servers.png",
     "delay": ""
   },
   "socialnetwork": {
-    "twitter": "http://twitter.com/mivano",
+    "twitter": "https://twitter.com/mivano",
     "linkedin": "https://www.linkedin.com/in/michielvanoudheusden",
-    "pinterest": "http://nl.pinterest.com/mivano/",
-    "github": "http://github.com/mivano",
+    "pinterest": "https://nl.pinterest.com/mivano/",
+    "github": "https://github.com/mivano",
     "email": "",
     "facebook": "",
     "googleplus": "",
@@ -34,7 +34,7 @@
   },
   "urls": {
     "site": "http://mindbyte.nl",
-    "hubpress": "http://mindbyte.nl",
+    "hubpress": "https://mindbyte.nl",
     "theme": "//mindbyte.nl/themes/uno",
     "images": "http://mindbyte.nl/images"
   },
