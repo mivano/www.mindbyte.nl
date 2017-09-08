@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Run the Azure CLI 2.0 on a VSTS hosted Linux agent - Michiel van Oudheusden</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Run the Azure CLI 2.0 on a VSTS hosted Linux agent">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Run the Azure CLI 2.0 on a VSTS hosted Linux agent">
+    <meta property="og:description" content="">
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1504872058039" />
+
+    <link rel="canonical" href="http://mindbyte.nl/2017/09/08/Run-the-Azure-CLI-20-on-a-VSTS-hosted-Linux-agent.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Michiel van Oudheusden" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Run the Azure CLI 2.0 on a VSTS hosted Linux agent" />
+    <meta property="og:description" content="The new Azure CLI version 2 is pretty easy to use when you want to manage your Azure resources. Even if you want to use it from the VSTS build/release agent, you can use the special Azure CLI task. This will log in, set the correct subscription, execute inline" />
+    <meta property="og:url" content="http://mindbyte.nl/2017/09/08/Run-the-Azure-CLI-20-on-a-VSTS-hosted-Linux-agent.html" />
+    <meta property="og:image" content="https://mindbyte.nl/images/azlinuxshell.png" />
+    <meta property="article:published_time" content="2017-09-08T00:00:00.000Z" />
+    <meta property="article:tag" content="azure" />
+    <meta property="article:tag" content="VSTS" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Run the Azure CLI 2.0 on a VSTS hosted Linux agent" />
+    <meta name="twitter:description" content="The new Azure CLI version 2 is pretty easy to use when you want to manage your Azure resources. Even if you want to use it from the VSTS build/release agent, you can use the special Azure CLI task. This will log in, set the correct subscription, execute inline" />
+    <meta name="twitter:url" content="http://mindbyte.nl/2017/09/08/Run-the-Azure-CLI-20-on-a-VSTS-hosted-Linux-agent.html" />
+    <meta name="twitter:image:src" content="https://mindbyte.nl/images/azlinuxshell.png" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Michiel van Oudheusden",
+    "author": {
+        "@type": "Person",
+        "name": "Michiel van Oudheusden",
+        "image": "https://avatars2.githubusercontent.com/u/668535?v=4",
+        "url": "http://mindbyte.nl/author/mivano/"
+    },
+    "headline": "Run the Azure CLI 2.0 on a VSTS hosted Linux agent",
+    "url": "http://mindbyte.nl/2017/09/08/Run-the-Azure-CLI-20-on-a-VSTS-hosted-Linux-agent.html",
+    "datePublished": "2017-09-08T00:00:00.000Z",
+    "image": "https://mindbyte.nl/images/azlinuxshell.png",
+    "keywords": "azure, VSTS",
+    "description": "The new Azure CLI version 2 is pretty easy to use when you want to manage your Azure resources. Even if you want to use it from the VSTS build/release agent, you can use the special Azure CLI task. This will log in, set the correct subscription, execute inline"
+}
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Michiel van Oudheusden" href="http://mindbyte.nl/rss/" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/atom-one-dark.min.css">
+
+</head>
+<body class="post-template tag-azure tag-VSTS no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed " style="background-image: url(https://mindbyte.nl/images/servers.png)">
+      <div class="panel-main">
+    
+        <div class="panel-main__inner panel-inverted">
+        <div class="panel-main__content">
+    
+            <a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden"><img src="https://avatars1.githubusercontent.com/u/668535?v&#x3D;3&amp;s&#x3D;460" width="80" alt="Michiel van Oudheusden logo" class="panel-cover__logo logo" /></a>
+            <h1 class="panel-cover__title panel-title"><a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden">Michiel van Oudheusden</a></h1>
+            <hr class="panel-cover__divider" />
+            <p class="panel-cover__description">Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.</p>
+            <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+            <div class="navigation-wrapper">
+    
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="http://mindbyte.nl/#blog" title="link to Michiel van Oudheusden blog" class="blog-button">Blog</a></li>
+                </ul>
+              </nav>
+    
+              
+              
+              <nav class="cover-navigation navigation--social">
+                <ul class="navigation">
+              
+              
+                  <!-- Twitter -->
+                  <li class="navigation__item">
+                    <a href="https://twitter.com/mivano" title="Twitter account">
+                      <i class='icon icon-social-twitter'></i>
+                      <span class="label">Twitter</span>
+                    </a>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="https://github.com/mivano" title="Github account">
+                      <i class='icon icon-social-github'></i>
+                      <span class="label">Github</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="https://nl.pinterest.com/mivano/" title="Pinterest account">
+                      <i class='icon icon-social-pinterest'></i>
+                      <span class="label">Pinterest</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- LinkedIn -->
+                  <li class="navigation__item">
+                    <a href="https://www.linkedin.com/in/michielvanoudheusden" title="LinkedIn account">
+                      <i class='icon icon-social-linkedin'></i>
+                      <span class="label">LinkedIn</span>
+                    </a>
+                  </li>
+              
+              
+                </ul>
+              </nav>
+              
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="panel-cover--overlay"></div>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="08 Sep 2017" class="post-meta__date date">08 Sep 2017</time> &#8226; <span class="post-meta__tags tags">on <a href="http://mindbyte.nl/tag/azure/">azure</a>, <a href="http://mindbyte.nl/tag/VSTS/">VSTS</a></span>
+        <span class="post-meta__author author"><img src="https://avatars2.githubusercontent.com/u/668535?v&#x3D;4" alt="profile image for Michiel van Oudheusden" class="avatar post-meta__avatar" /> by Michiel van Oudheusden</span>
+      </div>
+      <h1 class="post-title">Run the Azure CLI 2.0 on a VSTS hosted Linux agent</h1>
+    </header>
+
+    <section class="post tag-azure tag-VSTS">
+      <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The new Azure CLI version 2 is pretty easy to use when you want to manage your Azure resources. Even if you want to use it from the VSTS build/release agent, you can use the special Azure CLI task. This will log in, set the correct subscription, execute inline or script and perform a logout.</p>
+</div>
+<div class="paragraph">
+<p>The task is clever enough to detect the type of operating system and will switch between using a shell or a batch file. An inline script will be saved as a temporary shell or batch file too.</p>
+</div>
+<div class="paragraph">
+<p>The agent that executes the task need to have the Azure CLI installed. On your own agents, this is a once off operation. When you use the hosted agents, you can also use the Hosted VS2017. When the Azure CLI is not there, you can, of course, install it with a task.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_linux_agent">Linux agent</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So when you want to use a Hosted Linux agent, then at this time of writing, it does not contain the Azure CLI. Luckily it is pretty easy to add.</p>
+</div>
+<div class="paragraph">
+<p>At the beginning of your process, add a Shell script task. You can use the Microsoft version however that requires you to put the script in source control. Alternatively, you can use a Shell script that <a href="https://github.com/openalm/Extension-UtilitiesPack">supports inline script</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can find the script <a href="https://github.com/mivano/AzureTooling/blob/master/SetupAzureCLI.sh">here</a> but as it is pretty short I have included it below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">#!/bin/bash
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
+     sudo tee /etc/apt/sources.list.d/azure-cli.list
+sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893
+sudo apt-get install apt-transport-https
+sudo apt-get update &amp;&amp; sudo apt-get install azure-cli</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After your shell script task, add your Azure CLI tasks. You will get something like the below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/azlinuxshell.png" alt="azlinuxshell.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Hopefully, Microsoft will add the Azure CLI to their images, so this step will not be needed anymore.</p>
+</div>
+</div>
+</div>
+    </section>
+
+  </article>
+
+  
+  <section class="post-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'mivano'; // required: replace example with your forum shortname
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+  
+
+
+
+            <footer class="footer">
+                <span class="footer__copyright">&copy; 2017. All rights reserved.</span>
+                <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+                <span class="footer__copyright">Proudly published with <a href="http://hubpress.io" title="link to Hubpress website">Hubpress</a></span>
+            </footer>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+       
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1504872058039"></script>
+    
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-59660007-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>
