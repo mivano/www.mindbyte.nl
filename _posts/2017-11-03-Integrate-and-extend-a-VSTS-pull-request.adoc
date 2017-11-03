@@ -1,0 +1,16 @@
+// = Your Blog title
+// See https://hubpress.gitbooks.io/hubpress-knowledgebase/content/ for information about the parameters.
+// :hp-image: /covers/cover.png
+// :published_at: 2019-01-31
+// :hp-tags: HubPress, Blog, Open_Source,
+// :hp-alt-title: My English Title
+= Integrate and extend a VSTS pull request
+:hp-tags: vsts
+
+You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the Pull Request page.
+
+Visual Studio Team System can do the same; you can define a build that needs to be successful before the Pull Request can be completed. You can indicate who needs to approve the PR and even that all the remarks need to be resolved. However, you can also do some more interesting tricks by adding additional services that interface with the Pull Request. Such a service allows you to intercept the changes, determine if the PR can continue and block the PR when not allowed.
+
+For example to check if the code applies to certain rules and conventions, if it has passed a certain qualification from an external system or contains a standard license header.
+
+There is a good tutorial from https://docs.microsoft.com/en-us/vsts/git/how-to/create-pr-status-server[Microsoft]. 
