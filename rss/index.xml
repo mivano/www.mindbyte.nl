@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>https://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Fri, 03 Nov 2017 21:35:31 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Use health endpoints in ASPNET Core with Docker]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>https://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Fri, 03 Nov 2017 21:37:32 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Use health endpoints in ASPNET Core with Docker]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>It is important to know if your nicely created application is still working correctly, but you do not want to keep refreshing your browser and seeing if that page is still returning the data you expect. Luckily there are better ways than just creating a specific endpoint to hit.</p>
@@ -20,14 +20,14 @@
 <div class="paragraph">
 <p>In 'program.cs' you will find the following code:</p>
 </div>
-<div class="paragraph">
-<p>'''csharp
-  WebHost.CreateDefaultBuilder(args)
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  WebHost.CreateDefaultBuilder(args)
             .ConfigureHealthWithDefaults(
-                builder &#8658;
+                builder =&gt;
                 {
                     const int threshold = 100;
-                    builder.HealthChecks.AddCheck("DatabaseConnected", () &#8658; new ValueTask&lt;HealthCheckResult&gt;(HealthCheckResult.Healthy("Database Connection OK")));
+                    builder.HealthChecks.AddCheck("DatabaseConnected", () =&gt; new ValueTask&lt;HealthCheckResult&gt;(HealthCheckResult.Healthy("Database Connection OK")));
                     builder.HealthChecks.AddProcessPrivateMemorySizeCheck("Private Memory Size", threshold);
                     builder.HealthChecks.AddProcessVirtualMemorySizeCheck("Virtual Memory Size", threshold);
                     builder.HealthChecks.AddProcessPhysicalMemoryCheck("Working Set", threshold);
@@ -36,8 +36,8 @@
                 })
                 .UseHealth()
                 .UseStartup&lt;Startup&gt;()
-                .Build();
-'''</p>
+                .Build();</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>A couple of health checks are created and the UseHealth extension enables the functionality.</p>
@@ -45,12 +45,12 @@
 <div class="paragraph">
 <p>When you compile and run this code and go to the <a href="http://localhost:5000/health" class="bare">http://localhost:5000/health</a> endpoint, you will get back something like this:</p>
 </div>
-<div class="paragraph">
-<p>'''json
-{
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
   "healthy": {
     "DatabaseConnected": "Database Connection OK",
-    "github": "OK. <a href="https://github.com/"" class="bare">https://github.com/"</a>,
+    "github": "OK. https://github.com/",
     "google ping": "OK. google.com"
   },
   "degraded": {
@@ -62,8 +62,8 @@
     "Working Set": "FAILED. 69939200 &gt; 100"
   },
   "status": "Unhealthy"
-}
-'''</p>
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>As you can imagine, you can add any kind of check and by calling this from an API monitoring tool like <a href="https://www.runscope.com">RunScope</a>, your load balancer, <a href="https://www.newrelic.com">New Relic Synthetics</a> you can check the state of your application and act accordingly.</p>
@@ -79,16 +79,16 @@
 <div class="paragraph">
 <p>For the above example you can use a DOCKERFILE containing the HEALTHCHECK instruction:</p>
 </div>
-<hr>
-<div class="paragraph">
-<p>FROM microsoft/aspnetcore:2.0
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>FROM microsoft/aspnetcore:2.0
 ARG source
 WORKDIR /app
-HEALTHCHECK --interval=2s --timeout=3s --retries=1 CMD curl --silent --fail <a href="http://localhost:80/health" class="bare">http://localhost:80/health</a> || exit 1
+HEALTHCHECK --interval=2s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:80/health || exit 1
 EXPOSE 80
 COPY ${source:-obj/Docker/publish} .
-ENTRYPOINT ["dotnet", "AspNetCore2.Health.Api.QuickStart.dll"]
-'''</p>
+ENTRYPOINT ["dotnet", "AspNetCore2.Health.Api.QuickStart.dll"]</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The interval, timeout, and retries are optional, the CMD will tell what the actual check is. In this case, it is a curl command to the /health endpoint. Since it returns a non 200 code when there is an unhealthy state, the curl command will exit with a 1. Do keep in mind that curl needs to be included in the container image and this might not always be the <a href="https://blog.sixeyed.com/docker-healthchecks-why-not-to-use-curl-or-iwr/">best option</a>.</p>
@@ -104,14 +104,14 @@ ENTRYPOINT ["dotnet", "AspNetCore2.Health.Api.QuickStart.dll"]
 <div class="paragraph">
 <p>The healthcheck can also be set in a docker-compose.yml file</p>
 </div>
-<div class="paragraph">
-<p>'''yaml
-healthcheck:
-  test: curl --silent --fail <a href="http://localhost:80/health" class="bare">http://localhost:80/health</a> || exit 1
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">healthcheck:
+  test: curl --silent --fail http://localhost:80/health || exit 1
   interval: 5s
   timeout: 10s
-  retries: 3
-'''</p>
+  retries: 3</code></pre>
+</div>
 </div>
 </div>
 </div>

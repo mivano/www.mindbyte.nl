@@ -25,7 +25,7 @@
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
 
-    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1509744931675" />
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1509745052690" />
 
     <link rel="canonical" href="http://mindbyte.nl/2017/11/03/Use-health-endpoints-in-ASPNET-Core-with-Docker.html" />
     <meta name="referrer" content="origin" />
@@ -192,14 +192,14 @@
 <div class="paragraph">
 <p>In 'program.cs' you will find the following code:</p>
 </div>
-<div class="paragraph">
-<p>'''csharp
-  WebHost.CreateDefaultBuilder(args)
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  WebHost.CreateDefaultBuilder(args)
             .ConfigureHealthWithDefaults(
-                builder &#8658;
+                builder =&gt;
                 {
                     const int threshold = 100;
-                    builder.HealthChecks.AddCheck("DatabaseConnected", () &#8658; new ValueTask&lt;HealthCheckResult&gt;(HealthCheckResult.Healthy("Database Connection OK")));
+                    builder.HealthChecks.AddCheck("DatabaseConnected", () =&gt; new ValueTask&lt;HealthCheckResult&gt;(HealthCheckResult.Healthy("Database Connection OK")));
                     builder.HealthChecks.AddProcessPrivateMemorySizeCheck("Private Memory Size", threshold);
                     builder.HealthChecks.AddProcessVirtualMemorySizeCheck("Virtual Memory Size", threshold);
                     builder.HealthChecks.AddProcessPhysicalMemoryCheck("Working Set", threshold);
@@ -208,8 +208,8 @@
                 })
                 .UseHealth()
                 .UseStartup&lt;Startup&gt;()
-                .Build();
-'''</p>
+                .Build();</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>A couple of health checks are created and the UseHealth extension enables the functionality.</p>
@@ -217,12 +217,12 @@
 <div class="paragraph">
 <p>When you compile and run this code and go to the <a href="http://localhost:5000/health" class="bare">http://localhost:5000/health</a> endpoint, you will get back something like this:</p>
 </div>
-<div class="paragraph">
-<p>'''json
-{
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
   "healthy": {
     "DatabaseConnected": "Database Connection OK",
-    "github": "OK. <a href="https://github.com/"" class="bare">https://github.com/"</a>,
+    "github": "OK. https://github.com/",
     "google ping": "OK. google.com"
   },
   "degraded": {
@@ -234,8 +234,8 @@
     "Working Set": "FAILED. 69939200 &gt; 100"
   },
   "status": "Unhealthy"
-}
-'''</p>
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>As you can imagine, you can add any kind of check and by calling this from an API monitoring tool like <a href="https://www.runscope.com">RunScope</a>, your load balancer, <a href="https://www.newrelic.com">New Relic Synthetics</a> you can check the state of your application and act accordingly.</p>
@@ -251,16 +251,16 @@
 <div class="paragraph">
 <p>For the above example you can use a DOCKERFILE containing the HEALTHCHECK instruction:</p>
 </div>
-<hr>
-<div class="paragraph">
-<p>FROM microsoft/aspnetcore:2.0
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>FROM microsoft/aspnetcore:2.0
 ARG source
 WORKDIR /app
-HEALTHCHECK --interval=2s --timeout=3s --retries=1 CMD curl --silent --fail <a href="http://localhost:80/health" class="bare">http://localhost:80/health</a> || exit 1
+HEALTHCHECK --interval=2s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:80/health || exit 1
 EXPOSE 80
 COPY ${source:-obj/Docker/publish} .
-ENTRYPOINT ["dotnet", "AspNetCore2.Health.Api.QuickStart.dll"]
-'''</p>
+ENTRYPOINT ["dotnet", "AspNetCore2.Health.Api.QuickStart.dll"]</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The interval, timeout, and retries are optional, the CMD will tell what the actual check is. In this case, it is a curl command to the /health endpoint. Since it returns a non 200 code when there is an unhealthy state, the curl command will exit with a 1. Do keep in mind that curl needs to be included in the container image and this might not always be the <a href="https://blog.sixeyed.com/docker-healthchecks-why-not-to-use-curl-or-iwr/">best option</a>.</p>
@@ -276,14 +276,14 @@ ENTRYPOINT ["dotnet", "AspNetCore2.Health.Api.QuickStart.dll"]
 <div class="paragraph">
 <p>The healthcheck can also be set in a docker-compose.yml file</p>
 </div>
-<div class="paragraph">
-<p>'''yaml
-healthcheck:
-  test: curl --silent --fail <a href="http://localhost:80/health" class="bare">http://localhost:80/health</a> || exit 1
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">healthcheck:
+  test: curl --silent --fail http://localhost:80/health || exit 1
   interval: 5s
   timeout: 10s
-  retries: 3
-'''</p>
+  retries: 3</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -349,7 +349,7 @@ healthcheck:
        
     <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
-    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1509744931675"></script>
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1509745052690"></script>
     
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
