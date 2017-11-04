@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Integrate and change a VSTS pull request - Michiel van Oudheusden</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Integrate and change a VSTS pull request">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Integrate and change a VSTS pull request">
+    <meta property="og:description" content="">
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1509793904840" />
+
+    <link rel="canonical" href="http://mindbyte.nl/2017/11/04/Integrate-and-change-a-VSTS-pull-request.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Michiel van Oudheusden" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Integrate and change a VSTS pull request" />
+    <meta property="og:description" content="You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the Pull Request page. Visual Studio Team System" />
+    <meta property="og:url" content="http://mindbyte.nl/2017/11/04/Integrate-and-change-a-VSTS-pull-request.html" />
+    <meta property="og:image" content="https://mindbyte.nl/images/vstsprstatus.png" />
+    <meta property="article:published_time" content="2017-11-04T00:00:00.000Z" />
+    <meta property="article:tag" content="vsts" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Integrate and change a VSTS pull request" />
+    <meta name="twitter:description" content="You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the Pull Request page. Visual Studio Team System" />
+    <meta name="twitter:url" content="http://mindbyte.nl/2017/11/04/Integrate-and-change-a-VSTS-pull-request.html" />
+    <meta name="twitter:image:src" content="https://mindbyte.nl/images/vstsprstatus.png" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Michiel van Oudheusden",
+    "author": {
+        "@type": "Person",
+        "name": "Michiel van Oudheusden",
+        "image": "https://avatars2.githubusercontent.com/u/668535?v=4",
+        "url": "http://mindbyte.nl/author/mivano/"
+    },
+    "headline": "Integrate and change a VSTS pull request",
+    "url": "http://mindbyte.nl/2017/11/04/Integrate-and-change-a-VSTS-pull-request.html",
+    "datePublished": "2017-11-04T00:00:00.000Z",
+    "image": "https://mindbyte.nl/images/vstsprstatus.png",
+    "keywords": "vsts",
+    "description": "You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the Pull Request page. Visual Studio Team System"
+}
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Michiel van Oudheusden" href="http://mindbyte.nl/rss/" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/atom-one-dark.min.css">
+
+</head>
+<body class="post-template tag-vsts no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed " style="background-image: url(https://mindbyte.nl/images/servers.png)">
+      <div class="panel-main">
+    
+        <div class="panel-main__inner panel-inverted">
+        <div class="panel-main__content">
+    
+            <a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden"><img src="https://avatars1.githubusercontent.com/u/668535?v&#x3D;3&amp;s&#x3D;460" width="80" alt="Michiel van Oudheusden logo" class="panel-cover__logo logo" /></a>
+            <h1 class="panel-cover__title panel-title"><a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden">Michiel van Oudheusden</a></h1>
+            <hr class="panel-cover__divider" />
+            <p class="panel-cover__description">Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.</p>
+            <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+            <div class="navigation-wrapper">
+    
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="http://mindbyte.nl/#blog" title="link to Michiel van Oudheusden blog" class="blog-button">Blog</a></li>
+                </ul>
+              </nav>
+    
+              
+              
+              <nav class="cover-navigation navigation--social">
+                <ul class="navigation">
+              
+              
+                  <!-- Twitter -->
+                  <li class="navigation__item">
+                    <a href="https://twitter.com/mivano" title="Twitter account">
+                      <i class='icon icon-social-twitter'></i>
+                      <span class="label">Twitter</span>
+                    </a>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="https://github.com/mivano" title="Github account">
+                      <i class='icon icon-social-github'></i>
+                      <span class="label">Github</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="https://nl.pinterest.com/mivano/" title="Pinterest account">
+                      <i class='icon icon-social-pinterest'></i>
+                      <span class="label">Pinterest</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- LinkedIn -->
+                  <li class="navigation__item">
+                    <a href="https://www.linkedin.com/in/michielvanoudheusden" title="LinkedIn account">
+                      <i class='icon icon-social-linkedin'></i>
+                      <span class="label">LinkedIn</span>
+                    </a>
+                  </li>
+              
+              
+                </ul>
+              </nav>
+              
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="panel-cover--overlay"></div>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="04 Nov 2017" class="post-meta__date date">04 Nov 2017</time> &#8226; <span class="post-meta__tags tags">on <a href="http://mindbyte.nl/tag/vsts/">vsts</a></span>
+        <span class="post-meta__author author"><img src="https://avatars2.githubusercontent.com/u/668535?v&#x3D;4" alt="profile image for Michiel van Oudheusden" class="avatar post-meta__avatar" /> by Michiel van Oudheusden</span>
+      </div>
+      <h1 class="post-title">Integrate and change a VSTS pull request</h1>
+    </header>
+
+    <section class="post tag-vsts">
+      <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the <a href="https://developer.github.com/v3/guides/building-a-ci-server/">Pull Request page</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/githubprstatus.png" alt="githubprstatus.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Visual Studio Team System can do the same; you can define a build that needs to be successful before the Pull Request can be completed. You also can indicate who needs to approve the PR and even that all the remarks need to be resolved. However, you can also do some more interesting tricks by adding additional services that interface with the Pull Request. Such a service allows you to intercept the changes, determine if the PR can continue and block the PR when not allowed to be merged back into the target branch.</p>
+</div>
+<div class="paragraph">
+<p>For example to check if the code applies to certain rules and conventions, if it has passed a certain qualification from an external system or contains a standard license header.</p>
+</div>
+<div class="paragraph">
+<p>There is a good tutorial from <a href="https://docs.microsoft.com/en-us/vsts/git/how-to/create-pr-status-server">Microsoft</a> on how to build a nodejs application to do this so I won&#8217;t repeat that here. Interesting is that you can use <a href="https://ngrok.com/download">ngrok</a> to map a public domain name to a local port so you can test this from your own machine.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments">Comments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Besides changing the state of the PR (and make it blocked), you can also output comments to the PR. You can do this on individual files and even blocks of code in the file.</p>
+</div>
+<div class="paragraph">
+<p>Creating a comment is exposed by the vsts node library:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-node" data-lang="node">var comments = {
+        "comments": [
+        {
+            "content": "I like your *code* style!",
+            "commentType" : 1,
+            "parentCommentId" : 0
+        }],
+        "properties": {
+            "Microsoft.TeamFoundation.Discussion.SupportsMarkdown": {
+                "type": "System.Int32",
+                "value": 1
+            }
+        },
+        "status": 1
+    }
+
+    vstsGit.createComment(comments, repoId, pullRequestId, 0, projectId).then( result =&gt; {
+        console.log(result);
+    }).catch(result =&gt; {
+        console.log(result);
+    })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Best is to check with the documentation <a href="https://docs.microsoft.com/en-us/rest/api/vsts/git/pull%20request%20threads/create">here</a> as the node library is not up to date.</p>
+</div>
+<div class="paragraph">
+<p>When you create a PR and have your application configured under service hooks, you will get the following in your PR screen:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/vstsprstatus.png" alt="vstsprstatus.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_policy">Policy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When the service hook is defined as a PR integration, it will show up in the branch policies page as an exteral service.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/vstsbranchpolicy.png" alt="vstsbranchpolicy.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Here you can also make this a mandatory rule. So it has to be approved before it can be merged. If you try to complete a PR and the condition did not apply, you will get a nice warning.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/vstsprrejected.png" alt="vstsprrejected.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code">Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I placed the code on <a href="https://github.com/mivano/pr-status">GitHub</a>; this contains some simple logic to mark a PR to <strong>pending</strong> when you include a <em>WIP</em> in the title or mark it as <strong>error</strong> when it sees an <em>error</em> word in the text. These are just examples, you would check if it complies with your rules. It might need to have a correct description or certain artifacts.</p>
+</div>
+<div class="paragraph">
+<p>The code will also add a comment to the PR. You can make threaded conversations, set the state and even annotate files.</p>
+</div>
+<div class="paragraph">
+<p>You need to set your own Personal Access Token and VSTS address. I used a .env file which you can put in the same folder as your app.js.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>COLLECTIONURL=https://address.visualstudio.com
+TOKEN=yourtoken</code></pre>
+</div>
+</div>
+</div>
+</div>
+    </section>
+
+  </article>
+
+  
+  <section class="post-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'mivano'; // required: replace example with your forum shortname
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+  
+
+
+
+            <footer class="footer">
+                <span class="footer__copyright">&copy; 2017. All rights reserved.</span>
+                <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+                <span class="footer__copyright">Proudly published with <a href="http://hubpress.io" title="link to Hubpress website">Hubpress</a></span>
+            </footer>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+       
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1509793904840"></script>
+    
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-59660007-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>
