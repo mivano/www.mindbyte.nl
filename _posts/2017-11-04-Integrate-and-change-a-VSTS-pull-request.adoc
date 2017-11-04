@@ -19,7 +19,7 @@ Besides changing the state of the PR (and make it blocked), you can also output 
 
 Creating a comment is exposed by the vsts node library:
 
-```node
+```javascript
 var comments = {
         "comments": [
         {
