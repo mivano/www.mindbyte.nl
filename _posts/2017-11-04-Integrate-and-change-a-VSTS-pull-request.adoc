@@ -1,5 +1,6 @@
 = Integrate and change a VSTS pull request
 :hp-tags: vsts
+:hp-image: https://mindbyte.nl/images/vstsprstatus.png
 :published_at: 2017-11-04
 
 You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the https://developer.github.com/v3/guides/building-a-ci-server/[Pull Request page].
@@ -50,17 +51,18 @@ image::vstsprstatus.png[]
 
 == Policy
 
-When the service hook is defined as a PR integration, it will show up in the branch policies page. Here you can make this a mandatory rule. So it has to be approved before it can be merged.
+When the service hook is defined as a PR integration, it will show up in the branch policies page as an exteral service. 
 
 image::vstsbranchpolicy.png[]
 
-If you try to complete a PR and the condition did not apply, you will get a nice warning.
+Here you can also make this a mandatory rule. So it has to be approved before it can be merged. If you try to complete a PR and the condition did not apply, you will get a nice warning.
 
 image::vstsprrejected.png[]
 
 == Code
 
-I placed the code on https://github.com/mivano/pr-status[GitHub]; this contains some simple logic to mark a PR to *pending* when you include a WIP in the title or mark it as *error* when it sees an error in the text. These are just examples, you would check if it complies with your rules. It might need to have a correct description or certain artifacts.
+I placed the code on https://github.com/mivano/pr-status[GitHub]; this contains some simple logic to mark a PR to *pending* when you include a _WIP_ in the title or mark it as *error* when it sees an _error_ word in the text. These are just examples, you would check if it complies with your rules. It might need to have a correct description or certain artifacts.
+
 The code will also add a comment to the PR. You can make threaded conversations, set the state and even annotate files.
 
 You need to set your own Personal Access Token and VSTS address. I used a .env file which you can put in the same folder as your app.js.
@@ -69,6 +71,7 @@ You need to set your own Personal Access Token and VSTS address. I used a .env f
 COLLECTIONURL=https://address.visualstudio.com
 TOKEN=yourtoken
 ```
+
 
 
 
