@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>https://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Sat, 04 Nov 2017 11:11:44 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Integrate and change a VSTS pull request]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>https://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Sat, 04 Nov 2017 11:12:58 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Integrate and change a VSTS pull request]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>You might have seen it with GitHub; when you do a pull request there will most likely be a build being kicked off and that influences the state of the pull request. A failed build (or any other check) is shown on the <a href="https://developer.github.com/v3/guides/building-a-ci-server/">Pull Request page</a>.</p>
@@ -30,7 +30,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-node" data-lang="node">var comments = {
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">var comments = {
         "comments": [
         {
             "content": "I like your *code* style!",
