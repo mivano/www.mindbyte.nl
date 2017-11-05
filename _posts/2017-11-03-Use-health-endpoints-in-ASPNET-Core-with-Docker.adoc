@@ -96,7 +96,7 @@ When using Docker Swarm, you can also use the healthcheck options directly when 
 
 == Kubernetes
 
-In Kubernetes it works a little bit different. You still use the /health endpoint, but specify a https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#define-a-liveness-http-request[livenessProbe]. This will make sure that Kubernetes automatically restarts failed applications inside working containers.
+In Kubernetes it works a little bit different. You still use the /health endpoint, but specify a https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#define-a-liveness-http-request[livenessProbe]. This will make sure that Kubernetes automatically restarts working containers having failed applications inside.
 
 
 
