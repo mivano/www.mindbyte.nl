@@ -2,15 +2,15 @@
 :hp-image: https://mindbyte.nl/images/covers/appinsightmarkers.png
 :hp-tags: vsts, appinsights, monitoring
 
-Application Insights provides an enourmous amount of information about your applaction, infrastructure, users etc. It can be difficult to see if a recent change or deployment caused a certain effect. Like; did the last release increased or decreased the performance or did the error rate went up or down.
+Application Insights provides an enormous amount of information about your application, infrastructure, users etc. It can be difficult to see if a recent change or deployment caused a certain effect. Like; did the last release increased or decreased the performance or did the error rate went up or down.
 
-Application performance monitoring system have a functionality which allows you to mark releases. This basically stores an event which allows you to easily identity the changes before and after.
-In New Relic they are called https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/recording-deployments[deployments], in Raygun it is https://raygun.com/docs/deployments[Deployment Tracking] and in Application Insight it is called https://docs.microsoft.com/en-us/azure/application-insights/app-insights-annotations[Release annotations].
+A number of application performance monitoring systems have a functionality which allows you to mark releases. This basically stores an event which allows you to easily identify the changes before and after.
+In New Relic they are called https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/recording-deployments[deployments], in Raygun, it is https://raygun.com/docs/deployments[Deployment Tracking] and in Application Insight it is called https://docs.microsoft.com/en-us/azure/application-insights/app-insights-annotations[Release annotations].
 
-The capabilities in Application Insights are, compared to for exmaple New Relic, pretty basic. In New Relic you can more clearly see the effect between different transactions caused by a deployment.
+The capabilities in Application Insights are, compared to for example New Relic, pretty basic. In New Relic you can more clearly see the effect between different transactions caused by a deployment.
 
 == Application Insights
-In Application Insights you get, for now, markers in the graphs. This is visible in for exmaple the servers chart:
+In Application Insights you get, for now, markers in the graphs. This is visible in for example the servers chart:
 
 image::appinsightmarkers.png[]
 
@@ -79,9 +79,9 @@ This is a pretty basic script, missing validations, error handling etc, but it i
 The top function creates a Guid. Somehow the API expects a PUT operation and a Guid as identifier needs to be passed in. 
 Set you apiKey (create this one under the API Access blade) and the applicationId (found under the same API access blade). The releaseName, releaseDescription and triggerBy are up to you to fill in. You can even add additional properties by adding them to the data payload.
 
-The first curl command retrieves the location of the API. As it is not yet a public API, we need to follow redirects to come to the right location. The second curl command performs the PUT action. In the header we pass the apikey.
+The first curl command retrieves the location of the API. As it is not yet a public API, we need to follow redirects to come to the right location. The second curl command performs the PUT action. In the header, we pass the apikey.
 
-Save this into a file called for example CreateRelease.sh. Make sure to make it executable (chmod +x ./CreateRelease.sh) and execute it. 
+Save this into a file called for example CreateRelease.sh. Make sure to make it executable (*chmod +x ./CreateRelease.sh*) and execute it. 
 
 == Conclusion
-I needed to do some reverse engineering of the Powershell version, but this is a very minimal way of sending a release event to Application Insights. In a next blob post I will show how to integrate this into a release step in Visual Studio Online.
+I needed to do some reverse engineering of the Powershell version, but this is a very minimal way of sending a release event to Application Insights. In a next blog post, I will show how to integrate this into a release step in Visual Studio Online.
