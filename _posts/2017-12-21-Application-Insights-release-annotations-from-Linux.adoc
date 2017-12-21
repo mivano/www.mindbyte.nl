@@ -1,5 +1,5 @@
 = Application Insights release annotations from Linux
-:hp-image: https://mindbyte.nl/images/covers/appinsightmarkers.png
+:hp-image: https://mindbyte.nl/images/appinsightmarkers.png
 :hp-tags: vsts, appinsights, monitoring
 
 Application Insights provides an enormous amount of information about your application, infrastructure, users etc. It can be difficult to see if a recent change or deployment caused a certain effect. Like; did the last release increased or decreased the performance or did the error rate went up or down.
