@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Create indexes with included columns with Entity Framework Core using code first - Michiel van Oudheusden</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Create indexes with included columns with Entity Framework Core using code first">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Create indexes with included columns with Entity Framework Core using code first">
+    <meta property="og:description" content="">
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" type="text/css" href="//mindbyte.nl/themes/uno/assets/css/uno.css?v=1514320468454" />
+
+    <link rel="canonical" href="http://mindbyte.nl/2017/12/26/Create-indexes-with-included-columns-with-Entity-Framework-Core-using-code-first.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="Michiel van Oudheusden" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Create indexes with included columns with Entity Framework Core using code first" />
+    <meta property="og:description" content="Entity Framework allows you to use a code first approach in creating your database design. Basically, you create your classes, maybe add some annotations and let the Entity Framework tools do the work for you by creating migration files and updating the database. If you want to add an index," />
+    <meta property="og:url" content="http://mindbyte.nl/2017/12/26/Create-indexes-with-included-columns-with-Entity-Framework-Core-using-code-first.html" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Create indexes with included columns with Entity Framework Core using code first" />
+    <meta name="twitter:description" content="Entity Framework allows you to use a code first approach in creating your database design. Basically, you create your classes, maybe add some annotations and let the Entity Framework tools do the work for you by creating migration files and updating the database. If you want to add an index," />
+    <meta name="twitter:url" content="http://mindbyte.nl/2017/12/26/Create-indexes-with-included-columns-with-Entity-Framework-Core-using-code-first.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Michiel van Oudheusden",
+    "author": {
+        "@type": "Person",
+        "name": "Michiel van Oudheusden",
+        "image": "https://avatars2.githubusercontent.com/u/668535?v=4",
+        "url": "http://mindbyte.nl/author/mivano/"
+    },
+    "headline": "Create indexes with included columns with Entity Framework Core using code first",
+    "url": "http://mindbyte.nl/2017/12/26/Create-indexes-with-included-columns-with-Entity-Framework-Core-using-code-first.html",
+    "description": "Entity Framework allows you to use a code first approach in creating your database design. Basically, you create your classes, maybe add some annotations and let the Entity Framework tools do the work for you by creating migration files and updating the database. If you want to add an index,"
+}
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="Michiel van Oudheusden" href="http://mindbyte.nl/rss/" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/atom-one-dark.min.css">
+
+</head>
+<body class="post-template no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed " style="background-image: url(https://mindbyte.nl/images/servers.png)">
+      <div class="panel-main">
+    
+        <div class="panel-main__inner panel-inverted">
+        <div class="panel-main__content">
+    
+            <a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden"><img src="https://avatars1.githubusercontent.com/u/668535?v&#x3D;3&amp;s&#x3D;460" width="80" alt="Michiel van Oudheusden logo" class="panel-cover__logo logo" /></a>
+            <h1 class="panel-cover__title panel-title"><a href="http://mindbyte.nl" title="link to homepage for Michiel van Oudheusden">Michiel van Oudheusden</a></h1>
+            <hr class="panel-cover__divider" />
+            <p class="panel-cover__description">Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.</p>
+            <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+            <div class="navigation-wrapper">
+    
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="http://mindbyte.nl/#blog" title="link to Michiel van Oudheusden blog" class="blog-button">Blog</a></li>
+                </ul>
+              </nav>
+    
+              
+              
+              <nav class="cover-navigation navigation--social">
+                <ul class="navigation">
+              
+              
+                  <!-- Twitter -->
+                  <li class="navigation__item">
+                    <a href="https://twitter.com/mivano" title="Twitter account">
+                      <i class='icon icon-social-twitter'></i>
+                      <span class="label">Twitter</span>
+                    </a>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="https://github.com/mivano" title="Github account">
+                      <i class='icon icon-social-github'></i>
+                      <span class="label">Github</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- Github -->
+                  <li class="navigation__item">
+                    <a href="https://nl.pinterest.com/mivano/" title="Pinterest account">
+                      <i class='icon icon-social-pinterest'></i>
+                      <span class="label">Pinterest</span>
+                    </a>
+                  </li>
+                  </li>
+              
+              
+                  <!-- LinkedIn -->
+                  <li class="navigation__item">
+                    <a href="https://www.linkedin.com/in/michielvanoudheusden" title="LinkedIn account">
+                      <i class='icon icon-social-linkedin'></i>
+                      <span class="label">LinkedIn</span>
+                    </a>
+                  </li>
+              
+              
+                </ul>
+              </nav>
+              
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="panel-cover--overlay"></div>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="26 Dec 2017" class="post-meta__date date">26 Dec 2017</time> &#8226; <span class="post-meta__tags tags"></span>
+        <span class="post-meta__author author"><img src="https://avatars2.githubusercontent.com/u/668535?v&#x3D;4" alt="profile image for Michiel van Oudheusden" class="avatar post-meta__avatar" /> by Michiel van Oudheusden</span>
+      </div>
+      <h1 class="post-title">Create indexes with included columns with Entity Framework Core using code first</h1>
+    </header>
+
+    <section class="post">
+      <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Entity Framework allows you to use a code first approach in creating your database design. Basically, you create your classes, maybe add some annotations and let the Entity Framework tools do the work for you by creating migration files and updating the database.</p>
+</div>
+<div class="paragraph">
+<p>If you want to add an index, you can do this in the <code>OnModelCreating</code> function of your DbContext class. However, if you need to create an index with <a href="https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-indexes-with-included-columns">Include options</a> then you are not able to do this. My colleague Peter Groenewegen blogged about an approach you can take, by using <a href="https://pgroene.wordpress.com/2017/12/04/add-index-with-include-entity-framework-core-2-0/">Migration</a> files. Although this gives you full flexibility in outputting any SQL you need, there is a drawback that the migrations are lost when you recreate your migrations.</p>
+</div>
+<div class="paragraph">
+<p>The nicest solution would be to add the includes in the <code>OnModelCreating</code> as that would be scaffolded the next time a migration is created. Luckily it is possible to add some logic that allows us to do this.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementing_an_annotations_provider">Implementing an annotations provider</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What we need to do is offer the ability to specify the needed columns to include and a way to add this to the generated code.</p>
+</div>
+<div class="paragraph">
+<p>First, we create a method extension</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  static class IndexExtension
+    {
+        public static IndexBuilder Include&lt;TEntity&gt;(this IndexBuilder indexBuilder, Expression&lt;Func&lt;TEntity, object&gt;&gt; indexExpression)
+        {
+            var includeStatement = new StringBuilder();
+            foreach (var column in indexExpression.GetPropertyAccessList())
+            {
+                if (includeStatement.Length &gt; 0)
+                    includeStatement.Append(", ");
+
+                includeStatement.AppendFormat("[{0}]", column.Name);
+            }
+
+            indexBuilder.HasAnnotation("SqlServer:IncludeIndex", includeStatement.ToString());
+
+            return indexBuilder;
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we extend the <code>IndexBuilder</code> to have an Include method and we allow the user to pass in a field or a collection of fields. Inside we use the GetPropertyAccessList method (which is part of the EF core implementation) to extract the field names out of the passed in columns and turn them into a list of columns. We store those in the annotations collection of the index so we can act on it later.</p>
+</div>
+<div class="paragraph">
+<p>Now we can create a new index in the <code>OnModelCreating</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  modelBuilder.Entity&lt;Employee&gt;()
+                .HasIndex(rrs =&gt; rrs.LastName)
+                .Include&lt;Employee&gt;(rrs =&gt; new
+                {
+                    rrs.Address,
+                    rrs.City,
+                    rrs.Country
+                })
+                .HasName("IX_IncludeEmployee");</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_sql">Generating SQL</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The annotations alone won&#8217;t help us, we need to output the correct SQL for it. We need two parts;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  class ExtendedSqlServerMigrationsAnnotationProvider : SqlServerMigrationsAnnotationProvider
+    {
+        public ExtendedSqlServerMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies) : base(dependencies)
+        {
+
+        }
+
+        public override IEnumerable&lt;IAnnotation&gt; For(IIndex index)
+        {
+            var baseAnnotations = base.For(index);
+            var customAnnotations = index.GetAnnotations().Where(a =&gt; a.Name == "SqlServer:IncludeIndex");
+
+            return baseAnnotations.Concat(customAnnotations);
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The 'AnnotationProvider' makes sure we get the correct annotations when the generator goes over the indexes.</p>
+</div>
+<div class="paragraph">
+<p>To generate the index SQL code, we need to extend the <code>SqlServerMigrationsSqlGenerator</code> code</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp"> class ExtendedSqlServerMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
+    {
+        protected virtual string StatementTerminator =&gt; ";";
+
+        public ExtendedSqlServerMigrationsSqlGenerator(MigrationsSqlGeneratorDependencies dependencies, IMigrationsAnnotationProvider migrationsAnnotations) :
+            base(dependencies, migrationsAnnotations)
+        {
+
+        }
+
+        protected override void Generate(CreateIndexOperation operation, IModel model, MigrationCommandListBuilder builder, bool terminate)
+        {
+            base.Generate(operation, model, builder, false);
+
+            var includeIndexAnnotation = operation.FindAnnotation("SqlServer:IncludeIndex");
+
+            if (includeIndexAnnotation != null)
+                builder.Append($" INCLUDE({includeIndexAnnotation.Value})");
+
+            if (terminate)
+            {
+                builder.AppendLine(StatementTerminator);
+                EndStatement(builder);
+            }
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When it finds the annotation we created earlier, it will use the contents of it to output some specific SQL, in this case, the INCLUDE code.</p>
+</div>
+<div class="paragraph">
+<p>We need to tell Entity Framework to use these classes instead of the default classes. We can do so by calling the <code>ReplaceService</code> function in the <code>OnConfiguring</code> method of your DbContext.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp"> protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
+
+            optionsBuilder.ReplaceService&lt;IMigrationsAnnotationProvider, ExtendedSqlServerMigrationsAnnotationProvider&gt;();
+            optionsBuilder.ReplaceService&lt;IMigrationsSqlGenerator, ExtendedSqlServerMigrationsSqlGenerator&gt;();
+        }</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_the_classes">Generating the classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After creating a simple class and setting the index in the <code>OnModelCreating</code> code, we can generate the InitialCreate by calling:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-powershell" data-lang="powershell">Add-Migration InitialCreate</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will scaffold the project and add the annotations like below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp"> public partial class InitialCreate : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;Guid&gt;(nullable: false),
+                    Address = table.Column&lt;string&gt;(nullable: true),
+                    City = table.Column&lt;string&gt;(nullable: true),
+                    Country = table.Column&lt;string&gt;(nullable: true),
+                    DateOfBirth = table.Column&lt;DateTime&gt;(nullable: false),
+                    FirstName = table.Column&lt;string&gt;(nullable: true),
+                    LastName = table.Column&lt;string&gt;(nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey("PK_Employees", x =&gt; x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_FirstName",
+                table: "Employees",
+                column: "FirstName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncludeEmployee",
+                table: "Employees",
+                column: "LastName")
+                .Annotation("SqlServer:IncludeIndex", "[Address], [City], [Country]");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Employees");
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You see that the last CreateIndex contains the annotation with the name <strong>SqlServer:IncludeIndex</strong>. When we generate SQL code, either by running <strong>Update-Database</strong> or <strong>Create-Migration</strong>, we see a table with indexes appear.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/efcoreinclude.png" alt="efcoreinclude.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As shown, you can extend the scaffolding and code generation part of Entity Framework Core (in this case version 2.0.1). If you want to add additional statements you might be able to get some inspiration from this code. However, be aware that most of these APIs are internal and not supposed to be called directly. Meaning it can change in newer versions of Entity Framework.</p>
+</div>
+<div class="paragraph">
+<p>You can find all the code in the <a href="https://github.com/mivano/EFIndexInclude">GitHub repro</a>.</p>
+</div>
+</div>
+</div>
+    </section>
+
+  </article>
+
+  
+  <section class="post-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'mivano'; // required: replace example with your forum shortname
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </section>
+  
+
+
+
+            <footer class="footer">
+                <span class="footer__copyright">&copy; 2017. All rights reserved.</span>
+                <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+                <span class="footer__copyright">Proudly published with <a href="http://hubpress.io" title="link to Hubpress website">Hubpress</a></span>
+            </footer>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+       
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+    <script type="text/javascript" src="//mindbyte.nl/themes/uno/assets/js/main.js?v=1514320468454"></script>
+    
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-59660007-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>

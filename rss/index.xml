@@ -1,4 +1,226 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>https://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Tue, 26 Dec 2017 20:33:10 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Application Insights release annotations from Linux]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Michiel van Oudheusden]]></title><description><![CDATA[Microsoft .NET consultant, developer, architect. Focus on ALM, DevOps, APIs, Azure and everything around it.]]></description><link>http://mindbyte.nl</link><image><url>https://mindbyte.nl/images/servers.png</url><title>Michiel van Oudheusden</title><link>http://mindbyte.nl</link></image><generator>RSS for Node</generator><lastBuildDate>Tue, 26 Dec 2017 20:34:28 GMT</lastBuildDate><atom:link href="http://mindbyte.nl/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Create indexes with included columns with Entity Framework Core using code first]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Entity Framework allows you to use a code first approach in creating your database design. Basically, you create your classes, maybe add some annotations and let the Entity Framework tools do the work for you by creating migration files and updating the database.</p>
+</div>
+<div class="paragraph">
+<p>If you want to add an index, you can do this in the <code>OnModelCreating</code> function of your DbContext class. However, if you need to create an index with <a href="https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-indexes-with-included-columns">Include options</a> then you are not able to do this. My colleague Peter Groenewegen blogged about an approach you can take, by using <a href="https://pgroene.wordpress.com/2017/12/04/add-index-with-include-entity-framework-core-2-0/">Migration</a> files. Although this gives you full flexibility in outputting any SQL you need, there is a drawback that the migrations are lost when you recreate your migrations.</p>
+</div>
+<div class="paragraph">
+<p>The nicest solution would be to add the includes in the <code>OnModelCreating</code> as that would be scaffolded the next time a migration is created. Luckily it is possible to add some logic that allows us to do this.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementing_an_annotations_provider">Implementing an annotations provider</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>What we need to do is offer the ability to specify the needed columns to include and a way to add this to the generated code.</p>
+</div>
+<div class="paragraph">
+<p>First, we create a method extension</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  static class IndexExtension
+    {
+        public static IndexBuilder Include&lt;TEntity&gt;(this IndexBuilder indexBuilder, Expression&lt;Func&lt;TEntity, object&gt;&gt; indexExpression)
+        {
+            var includeStatement = new StringBuilder();
+            foreach (var column in indexExpression.GetPropertyAccessList())
+            {
+                if (includeStatement.Length &gt; 0)
+                    includeStatement.Append(", ");
+
+                includeStatement.AppendFormat("[{0}]", column.Name);
+            }
+
+            indexBuilder.HasAnnotation("SqlServer:IncludeIndex", includeStatement.ToString());
+
+            return indexBuilder;
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we extend the <code>IndexBuilder</code> to have an Include method and we allow the user to pass in a field or a collection of fields. Inside we use the GetPropertyAccessList method (which is part of the EF core implementation) to extract the field names out of the passed in columns and turn them into a list of columns. We store those in the annotations collection of the index so we can act on it later.</p>
+</div>
+<div class="paragraph">
+<p>Now we can create a new index in the <code>OnModelCreating</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  modelBuilder.Entity&lt;Employee&gt;()
+                .HasIndex(rrs =&gt; rrs.LastName)
+                .Include&lt;Employee&gt;(rrs =&gt; new
+                {
+                    rrs.Address,
+                    rrs.City,
+                    rrs.Country
+                })
+                .HasName("IX_IncludeEmployee");</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_sql">Generating SQL</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The annotations alone won&#8217;t help us, we need to output the correct SQL for it. We need two parts;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">  class ExtendedSqlServerMigrationsAnnotationProvider : SqlServerMigrationsAnnotationProvider
+    {
+        public ExtendedSqlServerMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies) : base(dependencies)
+        {
+
+        }
+
+        public override IEnumerable&lt;IAnnotation&gt; For(IIndex index)
+        {
+            var baseAnnotations = base.For(index);
+            var customAnnotations = index.GetAnnotations().Where(a =&gt; a.Name == "SqlServer:IncludeIndex");
+
+            return baseAnnotations.Concat(customAnnotations);
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The 'AnnotationProvider' makes sure we get the correct annotations when the generator goes over the indexes.</p>
+</div>
+<div class="paragraph">
+<p>To generate the index SQL code, we need to extend the <code>SqlServerMigrationsSqlGenerator</code> code</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp"> class ExtendedSqlServerMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
+    {
+        protected virtual string StatementTerminator =&gt; ";";
+
+        public ExtendedSqlServerMigrationsSqlGenerator(MigrationsSqlGeneratorDependencies dependencies, IMigrationsAnnotationProvider migrationsAnnotations) :
+            base(dependencies, migrationsAnnotations)
+        {
+
+        }
+
+        protected override void Generate(CreateIndexOperation operation, IModel model, MigrationCommandListBuilder builder, bool terminate)
+        {
+            base.Generate(operation, model, builder, false);
+
+            var includeIndexAnnotation = operation.FindAnnotation("SqlServer:IncludeIndex");
+
+            if (includeIndexAnnotation != null)
+                builder.Append($" INCLUDE({includeIndexAnnotation.Value})");
+
+            if (terminate)
+            {
+                builder.AppendLine(StatementTerminator);
+                EndStatement(builder);
+            }
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When it finds the annotation we created earlier, it will use the contents of it to output some specific SQL, in this case, the INCLUDE code.</p>
+</div>
+<div class="paragraph">
+<p>We need to tell Entity Framework to use these classes instead of the default classes. We can do so by calling the <code>ReplaceService</code> function in the <code>OnConfiguring</code> method of your DbContext.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp"> protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
+
+            optionsBuilder.ReplaceService&lt;IMigrationsAnnotationProvider, ExtendedSqlServerMigrationsAnnotationProvider&gt;();
+            optionsBuilder.ReplaceService&lt;IMigrationsSqlGenerator, ExtendedSqlServerMigrationsSqlGenerator&gt;();
+        }</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_the_classes">Generating the classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After creating a simple class and setting the index in the <code>OnModelCreating</code> code, we can generate the InitialCreate by calling:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-powershell" data-lang="powershell">Add-Migration InitialCreate</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will scaffold the project and add the annotations like below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp"> public partial class InitialCreate : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table =&gt; new
+                {
+                    Id = table.Column&lt;Guid&gt;(nullable: false),
+                    Address = table.Column&lt;string&gt;(nullable: true),
+                    City = table.Column&lt;string&gt;(nullable: true),
+                    Country = table.Column&lt;string&gt;(nullable: true),
+                    DateOfBirth = table.Column&lt;DateTime&gt;(nullable: false),
+                    FirstName = table.Column&lt;string&gt;(nullable: true),
+                    LastName = table.Column&lt;string&gt;(nullable: true)
+                },
+                constraints: table =&gt;
+                {
+                    table.PrimaryKey("PK_Employees", x =&gt; x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_FirstName",
+                table: "Employees",
+                column: "FirstName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncludeEmployee",
+                table: "Employees",
+                column: "LastName")
+                .Annotation("SqlServer:IncludeIndex", "[Address], [City], [Country]");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Employees");
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You see that the last CreateIndex contains the annotation with the name <strong>SqlServer:IncludeIndex</strong>. When we generate SQL code, either by running <strong>Update-Database</strong> or <strong>Create-Migration</strong>, we see a table with indexes appear.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://mindbyte.nl/images/efcoreinclude.png" alt="efcoreinclude.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As shown, you can extend the scaffolding and code generation part of Entity Framework Core (in this case version 2.0.1). If you want to add additional statements you might be able to get some inspiration from this code. However, be aware that most of these APIs are internal and not supposed to be called directly. Meaning it can change in newer versions of Entity Framework.</p>
+</div>
+<div class="paragraph">
+<p>You can find all the code in the <a href="https://github.com/mivano/EFIndexInclude">GitHub repro</a>.</p>
+</div>
+</div>
+</div>]]></description><link>http://mindbyte.nl/2017/12/26/Create-indexes-with-included-columns-with-Entity-Framework-Core-using-code-first.html</link><guid isPermaLink="true">http://mindbyte.nl/2017/12/26/Create-indexes-with-included-columns-with-Entity-Framework-Core-using-code-first.html</guid><dc:creator><![CDATA[Michiel van Oudheusden]]></dc:creator></item><item><title><![CDATA[Application Insights release annotations from Linux]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Application Insights provides an enormous amount of information about your application, infrastructure, users etc. It can be difficult to see if a recent change or deployment caused a certain effect. Like; did the last release increased or decreased the performance or did the error rate went up or down.</p>
